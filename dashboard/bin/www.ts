@@ -5,6 +5,7 @@ import http from "http";
 import debugLib from "debug";
 import print from "@utils/print";
 import { Bot } from "@server/bot";
+import { EPrintType } from "@enums";
 import app from "@dashboard/express";
 
 /**
@@ -46,13 +47,17 @@ const createServer = (client: Bot): void => {
   /**
    * Listen on provided port, on all network interfaces.
    */
-  server.listen(port, hostname);
+  server.listen(port, () => {
+    print(`Dashboard is running on ${hostname}:${port}`, EPrintType.INFO);
+  });
   server.on("error", onError);
   server.on("listening", onListening);
 
   /**
    * Make slug from string
+   *
    * @param {string} str
+   *
    * @returns {string}
    */
   function slugify(str: string): string {
@@ -66,6 +71,7 @@ const createServer = (client: Bot): void => {
    * Normalize a port into a number, string, or false.
    *
    * @param {string} val
+   *
    * @returns {number|string|boolean}
    */
   function normalizePort(val: string): number | string | boolean {
@@ -80,7 +86,8 @@ const createServer = (client: Bot): void => {
   /**
    * Event listener for HTTP server "error" event.
    *
-   * @param {Error} error
+   * @param {NodeJS.ErrnoException} error
+   *
    * @returns {void}
    */
   function onError(error: NodeJS.ErrnoException): void {
@@ -90,11 +97,11 @@ const createServer = (client: Bot): void => {
 
     switch (error.code) {
       case "EACCES":
-        print(bind + " requires elevated privileges", "error");
+        print(bind + " requires elevated privileges", EPrintType.ERROR);
         process.exit(1);
         break;
       case "EADDRINUSE":
-        print(bind + " is already in use", "error");
+        print(bind + " is already in use", EPrintType.ERROR);
         process.exit(1);
         break;
       default:
@@ -113,13 +120,12 @@ const createServer = (client: Bot): void => {
     if (!addr) return;
     else if (typeof addr === "string") {
       debug("Listening on " + addr);
-      return print(`Dashboard is running on ${addr}`, "info");
+      return print(`Dashboard is running on ${addr}`, EPrintType.INFO);
     }
 
     const bind = "port " + addr.port;
 
     debug("Listening on " + bind);
-    print(`Dashboard is running on ${addr.address}:${addr.port}`, "info");
   }
 }
 

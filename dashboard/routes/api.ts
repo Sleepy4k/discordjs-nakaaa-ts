@@ -3,6 +3,7 @@
  */
 import { Router } from "express";
 import parseDur from "@utils/parseDur";
+import { ICommandFile } from "@interfaces";
 import { version, Guild, User } from "discord.js";
 
 /*
@@ -21,6 +22,60 @@ router.get("/", function (req, res, next) {
       title: req.app.get("client").config.web.name,
       events: req.app.get("client").events,
     },
+  });
+});
+
+/* GET commands page. */
+router.get("/command", function (req, res, next) {
+  const client = req.app.get("client");
+
+  res.status(200).send({
+    status: "success",
+    message: `We have ${client.mcommands.size} commands!`,
+    data: client.mcommands.map((command: ICommandFile) => command.name),
+  });
+});
+
+/* GET command page. */
+router.get("/command/:command", function (req, res, next) {
+  const client = req.app.get("client");
+  const command = client.mcommands.get(req.params.command);
+
+  if (!command) res.status(404).send({
+    status: "error",
+    message: `Command ${req.params.command} not found!`,
+  });
+  else res.status(200).send({
+    status: "success",
+    message: `Command ${req.params.command} found!`,
+    data: command,
+  });
+});
+
+/* GET slashs page. */
+router.get("/slash", function (req, res, next) {
+  const client = req.app.get("client");
+
+  res.status(200).send({
+    status: "success",
+    message: `We have ${client.scommands.size} slash commands!`,
+    data: client.scommands.map((command: ICommandFile) => command.name),
+  });
+});
+
+/* GET slash page. */
+router.get("/slash/:command", function (req, res, next) {
+  const client = req.app.get("client");
+  const command = client.scommands.get(req.params.command);
+
+  if (!command) res.status(404).send({
+    status: "error",
+    message: `Command ${req.params.command} not found!`,
+  });
+  else res.status(200).send({
+    status: "success",
+    message: `Command ${req.params.command} found!`,
+    data: command,
   });
 });
 
@@ -93,8 +148,6 @@ router.get("/invite", function (req, res, next) {
 
 /* GET github page. */
 router.get("/github", function (req, res, next) {
-  const client = req.app.get("client");
-
   res.status(200).send({
     status: "success",
     message: `Check out our github!`,
