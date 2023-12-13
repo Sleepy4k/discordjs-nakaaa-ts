@@ -8,7 +8,6 @@
     "dev": "nodemon -w'./' -x \"npm run start\" --ext \"*.ts\"",
     "exec": "node ./dist/index.js",
     "build": "tsc -p tsconfig.json && tsc-alias",
-    "build:prod": "tsc --p tsconfig.json --removeComments && tsc-alias",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
