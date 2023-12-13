@@ -11,12 +11,8 @@
  *
  * March 12, 2023
  */
-import type TPrint from "./TPrint";
-import type TParseDur from "./TParseDur";
-import type TEventFunc from "./TEventFunc";
+import { EPrintType } from "@enums";
 
-export type {
-  TPrint,
-  TParseDur,
-  TEventFunc
-}
+type TPrint = (message: string, type?: EPrintType) => void;
+
+export default TPrint;

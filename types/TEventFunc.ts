@@ -11,12 +11,8 @@
  *
  * March 12, 2023
  */
-import type TPrint from "./TPrint";
-import type TParseDur from "./TParseDur";
-import type TEventFunc from "./TEventFunc";
+import { Bot } from "@server/bot";
 
-export type {
-  TPrint,
-  TParseDur,
-  TEventFunc
-}
+type TEventFunc = (client: Bot, ...args: any[]) => void;
+
+export default TEventFunc;

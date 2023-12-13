@@ -11,6 +11,6 @@
  *
  * March 12, 2023
  */
-type TPrintType = "error" | "warn" | "debug" | "info" | "default";
+type TParseDur = (ms: number) => string;
 
-export default TPrintType;
+export default TParseDur;
