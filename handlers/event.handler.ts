@@ -13,6 +13,7 @@
  */
 import print from "@utils/print";
 import { Bot } from "@server/bot";
+import { EPrintType } from "@enums";
 import { IEventFile } from "@interfaces";
 import { readdir } from "node:fs/promises";
 
@@ -40,8 +41,8 @@ export default async function (client: Bot): Promise<void> {
       }
     }));
   } catch (error: unknown) {
-    if (error instanceof Error) print(error.message, "error");
-    else if (typeof error === "string") print(error, "error");
-    else print("Unknown error", "error");
+    if (error instanceof Error) print(error.message, EPrintType.ERROR);
+    else if (typeof error === "string") print(error, EPrintType.ERROR);
+    else print("Unknown error", EPrintType.ERROR);
   }
 }

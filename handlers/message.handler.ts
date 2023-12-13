@@ -13,6 +13,7 @@
  */
 import print from "@utils/print";
 import { Bot } from "@server/bot";
+import { EPrintType } from "@enums";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
 
@@ -42,12 +43,12 @@ export default async function (client: Bot): Promise<void> {
           client.mcommands.set(command.name, command);
           client.logStatus(command.name, true, "Message");
         }
-        
+
       });
     }));
   } catch (error: unknown) {
-    if (error instanceof Error) print(error.message, "error");
-    else if (typeof error === "string") print(error, "error");
-    else print("Unknown error", "error");
+    if (error instanceof Error) print(error.message, EPrintType.ERROR);
+    else if (typeof error === "string") print(error, EPrintType.ERROR);
+    else print("Unknown error", EPrintType.ERROR);
   }
 }
