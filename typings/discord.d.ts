@@ -14,13 +14,14 @@
 import config from '@config';
 import { IChatBot } from '@interfaces';
 import type { Collection } from 'discord.js';
+import { Player } from 'discord-player';
 
 declare module "discord.js" {
   interface Client {
     /**
      * @type {config}
      */
-    config: config;
+    config: typeof config;
 
     /**
      * @type {Collection<string, any>}

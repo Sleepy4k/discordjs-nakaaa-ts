@@ -27,10 +27,5 @@ declare module "ejs-mate" {
   function compile(file: string, options: object, cb: (e: any, rendered?: string | undefined) => void): void;
   function renderFile(file: string, options: object, fn: (e: any, rendered?: string | undefined) => void): void;
 
-  renderFile.compile = compile;
-  renderFile.partial = partial;
-  renderFile.block = block;
-  renderFile.layout = layout;
-
   export = renderFile;
 }
