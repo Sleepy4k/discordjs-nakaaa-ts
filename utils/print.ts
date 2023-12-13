@@ -11,32 +11,33 @@
  *
  * March 12, 2023
  */
-import type { TPrintType } from "@types";
+import { EPrintType } from "@enums";
+import type { TPrint } from "@types";
 
 /**
  * Parse current date and time to human readable for console log with message
  *
  * @param {String} message
- * @param {TPrintType} type
+ * @param {EPrintType} type
  *
  * @returns {void}
  */
-export default function print(message: string, type: TPrintType = "default"): void {
+const print: TPrint = (message: string, type: EPrintType = EPrintType.DEFAULT): void => {
   const now = new Date();
   const date = now.toLocaleDateString();
   const time = now.toLocaleTimeString();
 
-  switch (type.toLowerCase()) {
-    case "error":
+  switch (type) {
+    case EPrintType.ERROR:
       console.log(`[${date} ${time}] [ERROR] ${message}`);
       break;
-    case "warn":
+    case EPrintType.WARN:
       console.log(`[${date} ${time}] [WARN] ${message}`);
       break;
-    case "debug":
+    case EPrintType.DEBUG:
       console.log(`[${date} ${time}] [DEBUG] ${message}`);
       break;
-    case "info":
+    case EPrintType.INFO:
       console.log(`[${date} ${time}] [INFO] ${message}`);
       break;
     default:
@@ -44,3 +45,5 @@ export default function print(message: string, type: TPrintType = "default"): vo
       break;
   }
 }
+
+export default print;

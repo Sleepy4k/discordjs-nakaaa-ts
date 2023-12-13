@@ -11,6 +11,7 @@
  *
  * March 12, 2023
  */
+import type { TParseDur } from "@types";
 
 /**
  * Parse duration to human readable
@@ -19,7 +20,7 @@
  *
  * @returns {String}
  */
-export default function parseDur(ms: number): string {
+const parseDur: TParseDur = (ms: number) => {
   let seconds = Math.floor(ms / 1000);
 
   const days = Math.floor(seconds / 86400);
@@ -40,3 +41,5 @@ export default function parseDur(ms: number): string {
   result += `${seconds} second${seconds > 1 ? 's' : ''}`;
   return result;
 }
+
+export default parseDur;
