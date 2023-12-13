@@ -11,6 +11,8 @@
  *
  * March 12, 2023
  */
+import type { TEventFunc } from "@types";
+
 interface IEventFile {
   /**
    * @type {string}
@@ -18,9 +20,9 @@ interface IEventFile {
   name: string;
 
   /**
-   * @type {Function}
+   * @type {TEventFunc}
    */
-  run: Function;
+  run: TEventFunc;
 }
 
 export default IEventFile;
