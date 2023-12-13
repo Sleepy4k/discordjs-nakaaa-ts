@@ -12,9 +12,10 @@
  * March 12, 2023
  */
 import "dotenv/config.js";
+import { ClientPresenceStatus } from "discord.js";
 
 const activity = {
-  type: process.env.ACTIVITY_TYPE || "dnd",
+  type: (process.env.ACTIVITY_TYPE || "dnd") as ClientPresenceStatus,
   description: process.env.ACTIVITY_NAME || "Bot Status"
 }
 

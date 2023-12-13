@@ -28,20 +28,9 @@ const bad_words = {
     "bego",
     "bejat",
     "bacot",
-    "anjir",
     "asu",
-    "njir",
-    "asw",
-    "asuw",
-    "asuww",
     "nenen",
     "ngewe",
-    "ngentod",
-    "ngentott",
-    "ngews",
-    "ngen",
-    "ngent",
-    "ngentt",
   ]
 }
 

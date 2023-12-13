@@ -17,8 +17,6 @@ import nsfw from "./nsfw.config";
 import slash from "./slash.config";
 import emoji from "./emoji.config";
 import chatbot from "./chatbot.config";
-import welcome from "./welcome.config";
-import goodbye from "./goodbye.config";
 import handler from "./handler.config";
 import activity from "./activity.config";
 import bad_words from "./bad_words.config";
@@ -31,8 +29,6 @@ const config = {
   emoji,
   slash,
   chatbot,
-  welcome,
-  goodbye,
   handler,
   activity,
   bad_words,
