@@ -13,10 +13,12 @@
  */
 import print from "@utils/print";
 import { Bot } from "@server/bot";
-import { ActivityType } from "discord.js";
+import { Event } from "@templates";
+import { EPrintType } from "@enums";
+import { ActivityType, Events } from "discord.js";
 
-export default {
-  name: "ready",
+export default new Event({
+  name: Events.ClientReady,
 
   run: async (client: Bot) => {
     if (!client.user) return;
@@ -32,9 +34,9 @@ export default {
         status: client.config.activity.type
       });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, "error");
-      else if (typeof error === "string") print(error, "error");
-      else print("Unknown error", "error");
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
     }
   }
-}
+});

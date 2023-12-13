@@ -11,18 +11,19 @@
  *
  * March 12, 2023
  */
-import config from "@config";
 import { inspect } from "util";
-import { EmbedBuilder, WebhookClient } from "discord.js";
+import { Bot } from "@server/bot";
+import { Event } from "@templates";
+import { EmbedBuilder, Events, WebhookClient } from "discord.js";
 
-export default {
-  name: "error",
+export default new Event({
+  name: Events.Error,
 
-  run: async (error: Error) => {
-    if (!config.anti_crash.enable) return;
+  run: async (client: Bot, error: Error) => {
+    if (!client.config.anti_crash.enable) return;
 
     const webhook = new WebhookClient({
-      url: config.anti_crash.webhook.url
+      url: client.config.anti_crash.webhook.url
     });
 
     const embed = new EmbedBuilder()
@@ -36,4 +37,4 @@ export default {
       embeds: [embed]
     });
   }
-}
+});
