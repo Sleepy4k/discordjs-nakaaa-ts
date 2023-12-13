@@ -13,9 +13,10 @@
  */
 import config from "@config";
 import print from "@utils/print";
+import { EPrintType } from "@enums";
 import { Player } from "discord-player";
 import CharacterAI from "node_characterai";
-import { ICooldown, IEmbedData, IEmbedBuilder } from "@interfaces";
+import { ICommandFile, IEmbedData, IEmbedBuilder } from "@interfaces";
 import {
   Client,
   Message,
@@ -24,6 +25,7 @@ import {
   EmbedBuilder,
   GatewayIntentBits,
   CommandInteraction,
+  EmbedFooterOptions,
   InteractionResponse
 } from "discord.js";
 
@@ -100,23 +102,23 @@ export class Bot extends Client {
     await this.player.extractors.loadDefault();
 
     this.login(token).catch((error: unknown) => {
-      if (error instanceof Error) print(error.message, "error");
-      else if (typeof error === "string") print(error, "error");
-      else print("Unknown error", "error");
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
     });
   }
 
   /**
    * Send embed to interaction
    *
-   * @param {CommandInteraction} interaction
+   * @param {CommandInteraction | Message<boolean>} interaction
    * @param {IEmbedData} data
    * @param {boolean} ephemeral
    * @param {boolean} fetchReply
    *
    * @returns {Promise<Message | InteractionResponse<boolean>>}
    */
-  async sendEmbed(interaction: CommandInteraction, data: IEmbedBuilder, ephemeral: boolean = false, fetchReply: boolean = false): Promise<Message | InteractionResponse<boolean>> {
+  async sendEmbed(interaction: CommandInteraction | Message<boolean>, data: IEmbedBuilder, ephemeral: boolean = false, fetchReply: boolean = false): Promise<Message | InteractionResponse<boolean>> {
     try {
       const embed = new EmbedBuilder();
 
@@ -137,9 +139,9 @@ export class Bot extends Client {
         fetchReply: fetchReply
       });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, "error");
-      else if (typeof error === "string") print(error, "error");
-      else print("Unknown error", "error");
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
 
       return await this.send(interaction, {
         content: "Something went wrong",
@@ -152,21 +154,20 @@ export class Bot extends Client {
   /**
    * Get footer for embed
    *
-   * @param {CommandInteraction} client
-   * @param {string} type
+   * @param {CommandInteraction | Message<boolean>} client
    *
    * @returns {object}
    */
-  getFooter(client: CommandInteraction, type: string = "message"): object {
+  getFooter(client: CommandInteraction | Message<boolean>): EmbedFooterOptions {
     try {
       if (!client) return {
         text: `${config.bot.name} | Bot by ${config.bot.author}`,
         iconURL: config.bot.icon,
       };
 
-      if (type === "message") return {
-        text: `Requested by ${client.user.username} | Bot by ${config.bot.author}`,
-        iconURL: client.user.displayAvatarURL({ forceStatic: false, size: 512 })
+      if (client instanceof Message) return {
+        text: `Requested by ${client.author.username} | Bot by ${config.bot.author}`,
+        iconURL: client.author.displayAvatarURL({ forceStatic: false, size: 512 })
       };
 
       return {
@@ -174,9 +175,9 @@ export class Bot extends Client {
         iconURL: client.user.displayAvatarURL({ forceStatic: false, size: 512 })
       };
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, "error");
-      else if (typeof error === "string") print(error, "error");
-      else print("Unknown error", "error");
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
 
       return {
         text: `${config.bot.name} | Bot by ${config.bot.author}`,
@@ -188,32 +189,29 @@ export class Bot extends Client {
   /**
    * Send message to interaction
    *
-   * @param {CommandInteraction} interaction
+   * @param {CommandInteraction | Message<boolean>} interaction
    * @param {IEmbedData} data
    *
    * @returns {Promise<Message | InteractionResponse<boolean>>}
    */
-  async send(interaction: CommandInteraction, data: IEmbedData): Promise<Message | InteractionResponse<boolean>> {
+  async send(interaction: CommandInteraction | Message<boolean>, data: IEmbedData): Promise<Message | InteractionResponse<boolean>> {
     try {
-      if (interaction.deferred) {
-        return await interaction.editReply({
-          embeds: data.embeds
-        });
-      } else if (interaction.replied) {
-        return await interaction.deferReply({
-          ephemeral: data.ephemeral
-        });
-      } else {
-        return await interaction.reply({
-          embeds: data.embeds,
-          ephemeral: data.ephemeral,
-          fetchReply: data.fetchReply
-        });
+      if (interaction instanceof Message) {
+        if (interaction.channel.send) return await interaction.channel.send({ embeds: data.embeds });
+        else return await interaction.reply({ embeds: data.embeds });
       }
+
+      if (interaction.deferred) return await interaction.editReply({ embeds: data.embeds });
+      else if (interaction.replied) return await interaction.deferReply({ ephemeral: data.ephemeral });
+      else return await interaction.reply({
+        embeds: data.embeds,
+        ephemeral: data.ephemeral,
+        fetchReply: data.fetchReply
+      });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, "error");
-      else if (typeof error === "string") print(error, "error");
-      else print("Unknown error", "error");
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
 
       return await interaction.reply({
         content: "Something went wrong",
@@ -226,13 +224,14 @@ export class Bot extends Client {
   /**
    * Handle cooldown for commands
    *
-   * @param {CommandInteraction} interaction
-   * @param {ICooldown} command
+   * @param {CommandInteraction | Message<boolean>} interaction
+   * @param {ICommandFile} command
    *
    * @returns {Boolean|Number}
    */
-  cooldown(interaction: CommandInteraction, command: ICooldown): boolean | number {
+  cooldown(interaction: CommandInteraction | Message<boolean>, command: ICommandFile): boolean | number {
     if (!interaction || !command) return false;
+    if (!command.cooldown || command.cooldown < 1) command.cooldown = 3;
 
     let { client, member } = interaction;
     if (!client.cooldowns.has(command.name)) client.cooldowns.set(command.name, new Collection());
@@ -272,7 +271,7 @@ export class Bot extends Client {
     const statusIcon = isLoaded ? "\x1b[32m✅\x1b[0m" : "\x1b[31m❌\x1b[0m";
     const statusText = isLoaded ? "Loaded" : "Not Loaded";
 
-    print(`${type} : ${name} | Status: ${statusIcon} ${statusText}`, "info");
+    print(`${type} : ${name} | Status: ${statusIcon} ${statusText}`, EPrintType.INFO);
   }
 
   /**
@@ -293,9 +292,9 @@ export class Bot extends Client {
       this.chatbot.AIChat = await characterAI.createOrContinueChat(charConfig.charId);
       this.chatbot.isAIAuthenticated = true;
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, "error");
-      else if (typeof error === "string") print(error, "error");
-      else print("Unknown error", "error");
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
     }
   }
 }

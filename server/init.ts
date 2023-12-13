@@ -40,6 +40,4 @@ createServer(client);
  *
  * @type {Promise<void>}
  */
-client.build(client.config.bot.token).catch((err) => {
-  console.error(err);
-});
+client.build(client.config.bot.token).catch((err) => console.error(err));
