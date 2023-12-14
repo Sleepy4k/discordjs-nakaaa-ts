@@ -12,7 +12,9 @@
  * March 12, 2023
  */
 import Event from "./Event";
+import Command from "./Command";
 
 export {
-  Event
+  Event,
+  Command
 };
