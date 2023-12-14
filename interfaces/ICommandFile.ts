@@ -11,7 +11,8 @@
  *
  * March 12, 2023
  */
-import { PermissionFlags, ApplicationCommandType } from "discord.js";
+import type { TMessageFunc } from "@types";
+import { ApplicationCommandType } from "discord.js";
 
 interface ICommandFile {
   /**
@@ -25,14 +26,14 @@ interface ICommandFile {
   description: string;
 
   /**
-   * @type {PermissionFlags}
+   * @type {bigint}
    */
-  userPermissions: PermissionFlags;
+  userPermissions: bigint;
 
   /**
-   * @type {PermissionFlags}
+   * @type {bigint}
    */
-  botPermissions: PermissionFlags;
+  botPermissions: bigint;
 
   /**
    * @type {string}
@@ -55,9 +56,9 @@ interface ICommandFile {
   options?: Array<object>;
 
   /**
-   * @type {Function}
+   * @type {TMessageFunc}
    */
-  run: Function;
+  run: TMessageFunc;
 }
 
 export default ICommandFile;
