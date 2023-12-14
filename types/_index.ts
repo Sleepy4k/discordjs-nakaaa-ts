@@ -14,9 +14,11 @@
 import type TPrint from "./TPrint";
 import type TParseDur from "./TParseDur";
 import type TEventFunc from "./TEventFunc";
+import type TMessageFunc from "./TMessageFunc";
 
 export type {
   TPrint,
   TParseDur,
-  TEventFunc
+  TEventFunc,
+  TMessageFunc
 }
