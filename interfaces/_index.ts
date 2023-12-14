@@ -17,6 +17,7 @@ import IEventFile from './IEventFile';
 import IEmbedData from "./IEmbedData";
 import ICommandFile from './ICommandFile';
 import IEmbedBuilder from "./IEmbedBuilder";
+import ICommandParam from "./ICommandParam";
 
 export {
   IChatBot,
@@ -24,5 +25,6 @@ export {
   IEventFile,
   IEmbedData,
   ICommandFile,
-  IEmbedBuilder
+  IEmbedBuilder,
+  ICommandParam
 };
