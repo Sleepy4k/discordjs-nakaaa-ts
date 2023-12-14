@@ -11,8 +11,10 @@
  *
  * March 12, 2023
  */
+import ESlashOpt from "./ESlashOpt";
 import EPrintType from "./EPrintType";
 
 export {
+  ESlashOpt,
   EPrintType
 };
