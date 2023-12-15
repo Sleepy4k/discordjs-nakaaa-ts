@@ -78,6 +78,7 @@ export class Bot extends Client {
     this.chatbot = {
       AIChat: null,
       isAIAuthenticated: false,
+      isPuppeteerInitialized: false,
       characterAI: new CharacterAI(),
     };
 
@@ -158,9 +159,9 @@ export class Bot extends Client {
    *
    * @returns {object}
    */
-  getFooter(client: CommandInteraction | Message<boolean>): EmbedFooterOptions {
+  getFooter(client: CommandInteraction | Message<boolean>, type?: string): EmbedFooterOptions {
     try {
-      if (!client) return {
+      if (!client || type) return {
         text: `${config.bot.name} | Bot by ${config.bot.author}`,
         iconURL: config.bot.icon,
       };
@@ -288,7 +289,8 @@ export class Bot extends Client {
     try {
       if (charConfig.token) await characterAI.authenticateWithToken(charConfig.token);
       else await characterAI.authenticateAsGuest();
-
+      
+      this.chatbot.isPuppeteerInitialized = true;
       this.chatbot.AIChat = await characterAI.createOrContinueChat(charConfig.charId);
       this.chatbot.isAIAuthenticated = true;
     } catch (error: unknown) {
@@ -310,7 +312,7 @@ async function loadHandlers(client: Bot): Promise<void> {
   const { list } = config.handler;
 
   list.forEach(async (file) => {
-    let handler = await import(`../handlers/${file}.handler`).then((r) => r.default);
-    await handler(client);
+    const handler = await import(`../handlers/${file}.handler`).then((handler) => handler.default);
+    await handler.run(client);
   });
 }
