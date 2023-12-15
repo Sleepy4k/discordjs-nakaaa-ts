@@ -313,6 +313,7 @@ async function loadHandlers(client: Bot): Promise<void> {
 
   list.forEach(async (file) => {
     const handler = await import(`../handlers/${file}.handler`).then((handler) => handler.default);
+    client.logStatus(handler.name, true, "Handler");
     await handler.run(client);
   });
 }
