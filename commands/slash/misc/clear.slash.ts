@@ -14,7 +14,7 @@
 import { Bot } from "@server/bot";
 import { ESlashOpt } from "@enums";
 import { Command } from "@templates";
-import type { TMessageFunc } from "@types";
+import type { TCommandFunc } from "@types";
 import main from "@functions/misc/clear.func";
 import { Message, PermissionFlagsBits, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
 
@@ -68,7 +68,7 @@ export default new Command({
 
   /**
    * Event function
-   * @type {TMessageFunc}
+   * @type {TCommandFunc}
    */
   run: async (client: Bot, interaction: Message | ChatInputCommandInteraction, args: any[], prefix: string) => {
     await main({ client, interaction, args, prefix });

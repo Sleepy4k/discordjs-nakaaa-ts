@@ -13,7 +13,7 @@
  */
 import { Bot } from "@server/bot";
 import { Command } from "@templates";
-import type { TMessageFunc } from "@types";
+import type { TCommandFunc } from "@types";
 import main from "@functions/fun/coin.func";
 import { Message, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
 
@@ -56,7 +56,7 @@ export default new Command({
 
   /**
    * Event function
-   * @type {TMessageFunc}
+   * @type {TCommandFunc}
    */
   run: async (client: Bot, interaction: Message | ChatInputCommandInteraction, args: any[], prefix: string) => {
     await main({ client, interaction, args, prefix });
