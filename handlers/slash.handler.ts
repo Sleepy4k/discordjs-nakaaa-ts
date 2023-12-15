@@ -14,50 +14,48 @@
 import print from "@utils/print";
 import { Bot } from "@server/bot";
 import { EPrintType } from "@enums";
+import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
 
-/**
- * Register all message commands
- *
- * @param {Bot} client
- *
- * @returns {Promise<void>}
- */
-export default async function (client: Bot): Promise<void> {
-  const { global, guild_id } = client.config.slash;
+export default new Handler({
+  name: "slash",
 
-  try {
-    let slashCommands: any = [];
+  run: async (client: Bot) => {
+    const { global, guild_id } = client.config.slash;
 
-    const slashDirs = await readdir("./commands/slash");
+    try {
+      let slashCommands: any = [];
 
-    await Promise.all(slashDirs.map(async (slashDir) => {
-      if (client.config.nsfw.enable && slashDir === client.config.nsfw.directory) return;
+      const slashDirs = await readdir("./commands/slash");
 
-      const slashs = await readdir(`./commands/slash/${slashDir}`);
-      const filteredSlashs = slashs.filter((file) => file.endsWith(".ts"));
+      await Promise.all(slashDirs.map(async (slashDir) => {
+        if (client.config.nsfw.enable && slashDir === client.config.nsfw.directory) return;
 
-      filteredSlashs.map(async (filteredSlash) => {
-        const fileName = filteredSlash.split(".");
-        const command: ICommandFile = await import(`../commands/slash/${slashDir}/${fileName[0]}.${fileName[1]}`).then((command) => command.default);
+        const slashs = await readdir(`./commands/slash/${slashDir}`);
+        const filteredSlashs = slashs.filter((file) => file.endsWith(".ts"));
 
-        if (!command.name) client.logStatus(command.name, false, "Slash");
-        else {
-          slashCommands.push(command);
-          client.scommands.set(command.name, command);
-          client.logStatus(command.name, true, "Slash");
-        }
+        filteredSlashs.map(async (filteredSlash) => {
+          const fileName = filteredSlash.split(".");
+          const command: ICommandFile = await import(`../commands/slash/${slashDir}/${fileName[0]}.${fileName[1]}`).then((command) => command.default);
+
+          if (!command.name) client.logStatus(command.name, false, "Slash");
+          else {
+            slashCommands.push(command);
+            client.scommands.set(command.name, command);
+            client.logStatus(command.name, true, "Slash");
+          }
+        });
+      }));
+
+      client.on("ready", async (client) => {
+        if (global) client.application.commands.set(slashCommands);
+        else client.guilds.cache.get(guild_id)?.commands.set(slashCommands);
       });
-    }));
-
-    client.on("ready", async (client) => {
-      if (global) client.application.commands.set(slashCommands);
-      else client.guilds.cache.get(guild_id)?.commands.set(slashCommands);
-    });
-  } catch (error: unknown) {
-    if (error instanceof Error) print(error.message, EPrintType.ERROR);
-    else if (typeof error === "string") print(error, EPrintType.ERROR);
-    else print("Unknown error", EPrintType.ERROR);
+    } catch (error: unknown) {
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
+    }
   }
-}
+});

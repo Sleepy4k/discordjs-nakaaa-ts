@@ -14,41 +14,38 @@
 import print from "@utils/print";
 import { Bot } from "@server/bot";
 import { EPrintType } from "@enums";
+import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
 
-/**
- * Register all message commands
- *
- * @param {Bot} client
- *
- * @returns {Promise<void>}
- */
-export default async function (client: Bot): Promise<void> {
-  try {
-    const commandDirs = await readdir("./commands/message");
+export default new Handler({
+  name: "message",
 
-    await Promise.all(commandDirs.map(async (commandDir) => {
-      if (client.config.nsfw.enable && commandDir === client.config.nsfw.directory) return;
+  run: async (client: Bot): Promise<void> => {
+    try {
+      const commandDirs = await readdir("./commands/message");
 
-      const commands = await readdir(`./commands/message/${commandDir}`);
-      const filteredCommands = commands.filter((file) => file.endsWith(".ts"));
+      await Promise.all(commandDirs.map(async (commandDir) => {
+        if (client.config.nsfw.enable && commandDir === client.config.nsfw.directory) return;
 
-      filteredCommands.map(async (filteredCommand) => {
-        const fileName = filteredCommand.split(".");
-        const command: ICommandFile = await import(`../commands/message/${commandDir}/${fileName[0]}.${fileName[1]}`).then((command) => command.default);
+        const commands = await readdir(`./commands/message/${commandDir}`);
+        const filteredCommands = commands.filter((file) => file.endsWith(".ts"));
 
-        if (!command.name) client.logStatus(command.name, false, "Message");
-        else {
-          client.mcommands.set(command.name, command);
-          client.logStatus(command.name, true, "Message");
-        }
+        filteredCommands.map(async (filteredCommand) => {
+          const fileName = filteredCommand.split(".");
+          const command: ICommandFile = await import(`../commands/message/${commandDir}/${fileName[0]}.${fileName[1]}`).then((command) => command.default);
 
-      });
-    }));
-  } catch (error: unknown) {
-    if (error instanceof Error) print(error.message, EPrintType.ERROR);
-    else if (typeof error === "string") print(error, EPrintType.ERROR);
-    else print("Unknown error", EPrintType.ERROR);
+          if (!command.name) client.logStatus(command.name, false, "Message");
+          else {
+            client.mcommands.set(command.name, command);
+            client.logStatus(command.name, true, "Message");
+          }
+        });
+      }));
+    } catch (error: unknown) {
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
+    }
   }
-}
+});

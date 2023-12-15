@@ -14,35 +14,33 @@
 import print from "@utils/print";
 import { Bot } from "@server/bot";
 import { EPrintType } from "@enums";
+import { Handler } from "@templates";
 import { IEventFile } from "@interfaces";
 import { readdir } from "node:fs/promises";
 
-/**
- * Handle all events
- *
- * @param {Bot} client
- *
- * @returns {Promise<void>}
- */
-export default async function (client: Bot): Promise<void> {
-  try {
-    const events = await readdir("./events");
-    const filteredEvents = events.filter((file) => file.endsWith(".ts"));
+export default new Handler({
+  name: "event",
 
-    await Promise.all(filteredEvents.map(async (filteredEvent) => {
-      const fileName = filteredEvent.split(".");
-      const event: IEventFile = await import(`../events/${fileName[0]}.${fileName[1]}`).then((event) => event.default);
+  run: async (client: Bot): Promise<void> => {
+    try {
+      const events = await readdir("./events");
+      const filteredEvents = events.filter((file) => file.endsWith(".ts"));
 
-      if (!event.name) client.logStatus(event.name, false, "Event");
-      else {
-        client.events.set(event.name, event);
-        client.logStatus(`${fileName[0]} (${event.name})`, true, "Event");
-        client.on(event.name, (...args) => event.run(client, ...args));
-      }
-    }));
-  } catch (error: unknown) {
-    if (error instanceof Error) print(error.message, EPrintType.ERROR);
-    else if (typeof error === "string") print(error, EPrintType.ERROR);
-    else print("Unknown error", EPrintType.ERROR);
+      await Promise.all(filteredEvents.map(async (filteredEvent) => {
+        const fileName = filteredEvent.split(".");
+        const event: IEventFile = await import(`../events/${fileName[0]}.${fileName[1]}`).then((event) => event.default);
+
+        if (!event.name) client.logStatus(event.name, false, "Event");
+        else {
+          client.events.set(event.name, event);
+          client.logStatus(`${fileName[0]} (${event.name})`, true, "Event");
+          client.on(event.name, (...args) => event.run(client, ...args));
+        }
+      }));
+    } catch (error: unknown) {
+      if (error instanceof Error) print(error.message, EPrintType.ERROR);
+      else if (typeof error === "string") print(error, EPrintType.ERROR);
+      else print("Unknown error", EPrintType.ERROR);
+    }
   }
-}
+});
