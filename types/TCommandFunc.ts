@@ -14,6 +14,6 @@
 import { Bot } from "@server/bot";
 import { Message, ChatInputCommandInteraction } from "discord.js";
 
-type TMessageFunc = (client: Bot, interaction: Message | ChatInputCommandInteraction, args: string[], prefix: string) => Promise<void>;
+type TCommandFunc = (client: Bot, interaction: Message | ChatInputCommandInteraction, args: string[], prefix: string) => Promise<void>;
 
-export default TMessageFunc;
+export default TCommandFunc;
