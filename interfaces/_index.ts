@@ -16,6 +16,7 @@ import ICooldown from "./ICooldown";
 import IEventFile from './IEventFile';
 import IEmbedData from "./IEmbedData";
 import ICommandFile from './ICommandFile';
+import IHandlerFile from "./IHandlerFile";
 import IEmbedBuilder from "./IEmbedBuilder";
 import ICommandParam from "./ICommandParam";
 
@@ -25,6 +26,7 @@ export {
   IEventFile,
   IEmbedData,
   ICommandFile,
+  IHandlerFile,
   IEmbedBuilder,
   ICommandParam
 };
