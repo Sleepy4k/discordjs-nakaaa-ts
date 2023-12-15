@@ -86,7 +86,8 @@ const main = async (data: ICommandParam) => {
   }, ephemeral);
 
   try {
-    await interaction.channel.bulkDelete(totalMessage + 1, true);
+    const deletedMessage = ephemeral ? totalMessage : totalMessage + 1;
+    await interaction.channel.bulkDelete(deletedMessage, true);
 
     return client.sendEmbed(interaction, {
       color: "Green",
