@@ -20,6 +20,12 @@ Tidak digunakan lagi
   folder NSFW sekarang sudah tidak digunakan lagi, jika kalian ingin menggunakan fitur tersebut, silahkan perbarui ke system yang terbaru, atau kalian bisa memperbarui dengan mengubah pada kedua sisi bukan di folder fungsi.
 ~~~
 
+Error ketika membuka web
+
+~~~bash
+  copy folder views dan public pada folder pengembangan dan paste pada folder dist dengan folder yang sama yaitu dashboard
+~~~
+
 ## EN
 
 Command Error
@@ -38,4 +44,10 @@ Desprecated
 
 ~~~bash
   NSFW folder is now desprecated, if you want to update it with new system please update it with yourself, or just edit it at both side not in function folder.
+~~~
+
+Error while opening web
+
+~~~bash
+  copy folder views and public in the developement folder and then paste it on dist folder with same folder that is dashboard
 ~~~
