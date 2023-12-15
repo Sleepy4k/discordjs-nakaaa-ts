@@ -12,7 +12,7 @@
  * March 12, 2023
  */
 import { ICommandFile } from "@interfaces";
-import type { TMessageFunc } from "@types";
+import type { TCommandFunc } from "@types";
 import { ApplicationCommandType } from "discord.js";
 
 class Command {
@@ -66,9 +66,9 @@ class Command {
 
   /**
    * Event function
-   * @type {TMessageFunc}
+   * @type {TCommandFunc}
    */
-  run: TMessageFunc
+  run: TCommandFunc
 
   /**
    * Init Event
