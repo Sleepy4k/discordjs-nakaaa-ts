@@ -25,6 +25,11 @@ interface IChatBot {
   isAIAuthenticated: boolean;
 
   /**
+   * @type {boolean}
+   */
+  isPuppeteerInitialized: boolean;
+
+  /**
    * @type {CharacterAI}
    */
   characterAI: CharacterAI;

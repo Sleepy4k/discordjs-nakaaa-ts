@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import type { TMessageFunc } from "@types";
+import type { TCommandFunc } from "@types";
 import { ApplicationCommandType } from "discord.js";
 
 interface ICommandFile {
@@ -56,9 +56,9 @@ interface ICommandFile {
   options?: Array<object>;
 
   /**
-   * @type {TMessageFunc}
+   * @type {TCommandFunc}
    */
-  run: TMessageFunc;
+  run: TCommandFunc;
 }
 
 export default ICommandFile;
