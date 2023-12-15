@@ -42,11 +42,25 @@ export default new Event({
     const messageCommand = client.mcommands.get(command) || client.mcommands.find((commands) => commands.aliases && commands.aliases.includes(command));
 
     if (command?.length > 0 && !messageCommand && client.config.chatbot.token !== "") {
+      if (!client.chatbot.isPuppeteerInitialized || !client.chatbot.isAIAuthenticated) return await client.sendEmbed(message, {
+        title: "Chatbot not ready",
+        description: `Hey ${message.author}, chatbot not ready!`,
+        footer: client.getFooter(message)
+      });
+
+      const reply = await client.sendEmbed(message, {
+        description: "Please wait...",
+        footer: client.getFooter(message, "basic")
+      });
+
       const response = await client.chatbot.AIChat.sendAndAwaitResponse(command, true);
       print(`${message.author.tag} (${message.author.id}) send message to chatbot '${command}' with response '${response.text}' in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
 
-      return await client.sendEmbed(message, {
-        description: response.text
+      return await reply.edit({
+        embeds: [{
+          description: response.text,
+          footer: client.getFooter(message, "basic")
+        }]
       });
     }
 
