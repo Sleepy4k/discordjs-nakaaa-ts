@@ -15,6 +15,7 @@ import print from "@utils/print";
 import { Bot } from "@server/bot";
 import { Event } from "@templates";
 import { EPrintType } from "@enums";
+import CatchError from "@classes/CatchError";
 import { Events, Message } from "discord.js";
 
 export default new Event({
@@ -38,9 +39,7 @@ export default new Event({
         description: `Hey ${message.author}, you can't say that!`,
         footer: client.getFooter(message)
       }).then((msg) => setTimeout(() => msg.delete(), 2500)).catch((error: unknown) => {
-        if (error instanceof Error) print(error.message, EPrintType.ERROR);
-        else if (typeof error === "string") print(error, EPrintType.ERROR);
-        else print("Unknown error", EPrintType.ERROR);
+        new CatchError(error);
       });
     });
   }

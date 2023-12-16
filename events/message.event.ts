@@ -13,8 +13,10 @@
  */
 import print from "@utils/print";
 import { Bot } from "@server/bot";
+import regExp from "@utils/regExp";
 import { Event } from "@templates";
 import { EPrintType } from "@enums";
+import CatchError from "@classes/CatchError";
 import { Events, Message, PermissionsBitField } from "discord.js";
 
 export default new Event({
@@ -24,7 +26,7 @@ export default new Event({
     if (!client.user) return;
     if (message.author.bot || !message.member || !message.guild || !message.id) return;
 
-    const mentionPrefix = new RegExp(`^(<@!?${client.user.id}>|${escapeRegExp(client.prefix)})\\s*`);
+    const mentionPrefix = new RegExp(`^(<@!?${client.user.id}>|${regExp(client.prefix)})\\s*`);
     if (!mentionPrefix.test(message.content)) return;
 
     const [, matchedPrefix] = message.content.match(mentionPrefix) || [];
@@ -41,7 +43,7 @@ export default new Event({
 
     const messageCommand = client.mcommands.get(command) || client.mcommands.find((commands) => commands.aliases && commands.aliases.includes(command));
 
-    if (command?.length > 0 && !messageCommand && client.config.chatbot.token !== "") {
+    if (command?.length > 0 && !messageCommand && matchedPrefix.includes(client.user.id) && client.config.chatbot.token !== "") {
       if (!client.chatbot.isPuppeteerInitialized || !client.chatbot.isAIAuthenticated) return await client.sendEmbed(message, {
         title: "Chatbot not ready",
         description: `Hey ${message.author}, chatbot not ready!`,
@@ -56,11 +58,11 @@ export default new Event({
       const response = await client.chatbot.AIChat.sendAndAwaitResponse(command, true);
       print(`${message.author.tag} (${message.author.id}) send message to chatbot '${command}' with response '${response.text}' in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
 
-      return await reply.edit({
-        embeds: [{
-          description: response.text,
-          footer: client.getFooter(message, "basic")
-        }]
+      await reply.delete();
+
+      return await client.sendEmbed(message, {
+        description: response.text,
+        footer: client.getFooter(message, "basic")
       });
     }
 
@@ -99,12 +101,12 @@ export default new Event({
       footer: client.getFooter(message)
     });
     else {
-      print(`${message.author.tag} (${message.author.id}) ran command ${messageCommand.name} in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
-      await messageCommand.run(client, message, args, client.prefix);
+      try {
+        print(`${message.author.tag} (${message.author.id}) ran command ${messageCommand.name} in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
+        await messageCommand.run(client, message, args, client.prefix);
+      } catch (error: unknown) {
+        new CatchError(error);
+      }
     }
   }
 });
-
-function escapeRegExp(word: string) {
-  return word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}

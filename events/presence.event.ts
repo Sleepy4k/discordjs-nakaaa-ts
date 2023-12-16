@@ -14,7 +14,7 @@
 import print from "@utils/print";
 import { Bot } from "@server/bot";
 import { Event } from "@templates";
-import { EPrintType } from "@enums";
+import CatchError from "@classes/CatchError";
 import { ActivityType, Events } from "discord.js";
 
 export default new Event({
@@ -34,9 +34,7 @@ export default new Event({
         status: client.config.activity.type
       });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     }
   }
 });
