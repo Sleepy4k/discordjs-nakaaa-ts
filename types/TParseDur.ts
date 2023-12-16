@@ -11,6 +11,14 @@
  *
  * March 12, 2023
  */
+
+/**
+ * Parse duration to human readable
+ *
+ * @param {number} ms
+ *
+ * @returns {string}
+ */
 type TParseDur = (ms: number) => string;
 
 export default TParseDur;

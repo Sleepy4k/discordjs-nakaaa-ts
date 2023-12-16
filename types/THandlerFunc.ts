@@ -13,6 +13,13 @@
  */
 import { Bot } from "@server/bot";
 
+/**
+ * Handler function
+ *
+ * @param {Bot} client
+ *
+ * @returns {Promise<void>}
+ */
 type THandlerFunc = (client: Bot) => Promise<void>;
 
 export default THandlerFunc;

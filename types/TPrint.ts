@@ -13,6 +13,14 @@
  */
 import { EPrintType } from "@enums";
 
+/**
+ * Parse current date and time to human readable for console log with message
+ *
+ * @param {string} message
+ * @param {EPrintType} type
+ *
+ * @returns {void}
+ */
 type TPrint = (message: string, type?: EPrintType) => void;
 
 export default TPrint;

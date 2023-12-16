@@ -13,6 +13,14 @@
  */
 import { Bot } from "@server/bot";
 
+/**
+ * Event function
+ *
+ * @param {Bot} client
+ * @param {any[]} args
+ *
+ * @returns {void}
+ */
 type TEventFunc = (client: Bot, ...args: any[]) => void;
 
 export default TEventFunc;
