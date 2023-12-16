@@ -34,6 +34,7 @@
       "@server/*": ["./server/*"],
       "@enums": ["./enums/_index"],
       "@types": ["./types/_index"],
+      "@classes/*": ["./classes/*"],
       "@config": ["./config/_index"],
       "@commands/*": ["./commands/*"],
       "@handlers/*": ["./handlers/*"],
