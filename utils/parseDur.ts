@@ -16,11 +16,11 @@ import type { TParseDur } from "@types";
 /**
  * Parse duration to human readable
  *
- * @param {Number} ms
+ * @param {number} ms
  *
- * @returns {String}
+ * @returns {string}
  */
-const parseDur: TParseDur = (ms: number) => {
+const parseDur: TParseDur = (ms: number): string => {
   let seconds = Math.floor(ms / 1000);
 
   const days = Math.floor(seconds / 86400);

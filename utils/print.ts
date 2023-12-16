@@ -13,37 +13,46 @@
  */
 import { EPrintType } from "@enums";
 import type { TPrint } from "@types";
+import LogToFile from "@classes/LogToFile";
 
 /**
  * Parse current date and time to human readable for console log with message
  *
- * @param {String} message
+ * @param {string} message
  * @param {EPrintType} type
  *
  * @returns {void}
  */
 const print: TPrint = (message: string, type: EPrintType = EPrintType.DEFAULT): void => {
+  let data;
   const now = new Date();
   const date = now.toLocaleDateString();
   const time = now.toLocaleTimeString();
 
   switch (type) {
     case EPrintType.ERROR:
-      console.log(`[${date} ${time}] [ERROR] ${message}`);
+      data = `[${date} ${time}] [ERROR] ${message}`;
+      LogToFile.write(data, EPrintType.ERROR);
       break;
     case EPrintType.WARN:
-      console.log(`[${date} ${time}] [WARN] ${message}`);
+      data = `[${date} ${time}] [WARN] ${message}`;
+      LogToFile.write(data, EPrintType.WARN);
       break;
     case EPrintType.DEBUG:
-      console.log(`[${date} ${time}] [DEBUG] ${message}`);
+      data = `[${date} ${time}] [DEBUG] ${message}`;
+      LogToFile.write(data, EPrintType.DEBUG);
       break;
     case EPrintType.INFO:
-      console.log(`[${date} ${time}] [INFO] ${message}`);
+      data = `[${date} ${time}] [INFO] ${message}`;
+      LogToFile.write(data, EPrintType.INFO);
       break;
     default:
-      console.log(`[${date} ${time}] ${message}`);
+      data = `[${date} ${time}] ${message}`;
+      LogToFile.write(data, EPrintType.DEFAULT);
       break;
   }
+
+  console.log(data);
 }
 
 export default print;
