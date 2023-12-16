@@ -11,12 +11,11 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
 import { Bot } from "@server/bot";
-import { EPrintType } from "@enums";
 import { Handler } from "@templates";
 import { IEventFile } from "@interfaces";
 import { readdir } from "node:fs/promises";
+import CatchError from "@classes/CatchError";
 
 export default new Handler({
   name: "event",
@@ -28,9 +27,13 @@ export default new Handler({
 
       await Promise.all(filteredEvents.map(async (filteredEvent) => {
         const fileName = filteredEvent.split(".");
-        const event: IEventFile = await import(`../events/${fileName[0]}.${fileName[1]}`).then((event) => event.default);
+        const event: IEventFile = await import(`../events/${fileName[0]}.${fileName[1]}`)
+          .then((event) => event.default)
+          .catch((_err) => {
+            return { name: null };
+          });
 
-        if (!event.name) client.logStatus(event.name, false, "Event");
+        if (!event.name) client.logStatus(fileName[0], false, "Event");
         else {
           client.events.set(event.name, event);
           client.logStatus(`${fileName[0]} (${event.name})`, true, "Event");
@@ -38,9 +41,7 @@ export default new Handler({
         }
       }));
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     }
   }
 });

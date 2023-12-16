@@ -11,12 +11,11 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
 import { Bot } from "@server/bot";
-import { EPrintType } from "@enums";
 import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
+import CatchError from "@classes/CatchError";
 
 export default new Handler({
   name: "message",
@@ -33,9 +32,13 @@ export default new Handler({
 
         filteredCommands.map(async (filteredCommand) => {
           const fileName = filteredCommand.split(".");
-          const command: ICommandFile = await import(`../commands/message/${commandDir}/${fileName[0]}.${fileName[1]}`).then((command) => command.default);
+          const command: ICommandFile = await import(`../commands/message/${commandDir}/${fileName[0]}.${fileName[1]}`)
+            .then((command) => command.default)
+            .catch((_err) => {
+              return { name: null };
+            });
 
-          if (!command.name) client.logStatus(command.name, false, "Message");
+          if (!command.name) client.logStatus(fileName[0], false, "Message");
           else {
             client.mcommands.set(command.name, command);
             client.logStatus(command.name, true, "Message");
@@ -43,9 +46,7 @@ export default new Handler({
         });
       }));
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     }
   }
 });

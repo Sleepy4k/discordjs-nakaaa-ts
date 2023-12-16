@@ -11,12 +11,11 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
 import { Bot } from "@server/bot";
-import { EPrintType } from "@enums";
 import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
+import CatchError from "@classes/CatchError";
 
 export default new Handler({
   name: "slash",
@@ -37,9 +36,13 @@ export default new Handler({
 
         filteredSlashs.map(async (filteredSlash) => {
           const fileName = filteredSlash.split(".");
-          const command: ICommandFile = await import(`../commands/slash/${slashDir}/${fileName[0]}.${fileName[1]}`).then((command) => command.default);
+          const command: ICommandFile = await import(`../commands/slash/${slashDir}/${fileName[0]}.${fileName[1]}`)
+            .then((command) => command.default)
+            .catch((_eer) => {
+              return { name: null };
+            });
 
-          if (!command.name) client.logStatus(command.name, false, "Slash");
+          if (!command.name) client.logStatus(fileName[0], false, "Slash");
           else {
             slashCommands.push(command);
             client.scommands.set(command.name, command);
@@ -53,9 +56,7 @@ export default new Handler({
         else client.guilds.cache.get(guild_id)?.commands.set(slashCommands);
       });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     }
   }
 });
