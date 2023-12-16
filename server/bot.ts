@@ -16,6 +16,7 @@ import print from "@utils/print";
 import { EPrintType } from "@enums";
 import { Player } from "discord-player";
 import CharacterAI from "node_characterai";
+import CatchError from "@classes/CatchError";
 import { ICommandFile, IEmbedData, IEmbedBuilder } from "@interfaces";
 import {
   Client,
@@ -103,9 +104,7 @@ export class Bot extends Client {
     await this.player.extractors.loadDefault();
 
     this.login(token).catch((error: unknown) => {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     });
   }
 
@@ -140,9 +139,7 @@ export class Bot extends Client {
         fetchReply: fetchReply
       });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
 
       return await this.send(interaction, {
         content: "Something went wrong",
@@ -156,6 +153,7 @@ export class Bot extends Client {
    * Get footer for embed
    *
    * @param {CommandInteraction | Message<boolean>} client
+   * @param {string | undefined} type
    *
    * @returns {object}
    */
@@ -176,9 +174,7 @@ export class Bot extends Client {
         iconURL: client.user.displayAvatarURL({ forceStatic: false, size: 512 })
       };
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
 
       return {
         text: `${config.bot.name} | Bot by ${config.bot.author}`,
@@ -210,9 +206,7 @@ export class Bot extends Client {
         fetchReply: data.fetchReply
       });
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
 
       return await interaction.reply({
         content: "Something went wrong",
@@ -289,14 +283,12 @@ export class Bot extends Client {
     try {
       if (charConfig.token) await characterAI.authenticateWithToken(charConfig.token);
       else await characterAI.authenticateAsGuest();
-      
+
       this.chatbot.isPuppeteerInitialized = true;
       this.chatbot.AIChat = await characterAI.createOrContinueChat(charConfig.charId);
       this.chatbot.isAIAuthenticated = true;
     } catch (error: unknown) {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     }
   }
 }
