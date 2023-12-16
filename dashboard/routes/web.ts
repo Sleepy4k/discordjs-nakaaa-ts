@@ -21,7 +21,7 @@ router.get("/docs", function (req, res, next) {
     title: req.app.get("client").config.web.name + " | Docs",
     frame: {
       url: "https://discord.js.org/#/docs/discord.js/14.7.1/general/welcome",
-      border: "0",
+      border: "0"
     }
   });
 });
@@ -33,7 +33,7 @@ router.get("/discord", function (req, res, next) {
     title: req.app.get("client").config.web.name + " | Discord",
     frame: {
       url: "https://discordjs.guide/whats-new.html#site",
-      border: "0",
+      border: "0"
     }
   });
 });

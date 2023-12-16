@@ -47,9 +47,7 @@ const createServer = (client: Bot): void => {
   /**
    * Listen on provided port, on all network interfaces.
    */
-  server.listen(port, () => {
-    print(`Dashboard is running on ${hostname}:${port}`, EPrintType.INFO);
-  });
+  server.listen(port, () => print(`Dashboard is running on ${hostname}:${port}`, EPrintType.INFO));
   server.on("error", onError);
   server.on("listening", onListening);
 
@@ -72,7 +70,7 @@ const createServer = (client: Bot): void => {
    *
    * @param {string} val
    *
-   * @returns {number|string|boolean}
+   * @returns {number | string | boolean}
    */
   function normalizePort(val: string): number | string | boolean {
     const port = parseInt(val, 10);
@@ -99,11 +97,9 @@ const createServer = (client: Bot): void => {
       case "EACCES":
         print(bind + " requires elevated privileges", EPrintType.ERROR);
         process.exit(1);
-        break;
       case "EADDRINUSE":
         print(bind + " is already in use", EPrintType.ERROR);
         process.exit(1);
-        break;
       default:
         throw error;
     }
@@ -120,12 +116,10 @@ const createServer = (client: Bot): void => {
     if (!addr) return;
     else if (typeof addr === "string") {
       debug("Listening on " + addr);
-      return print(`Dashboard is running on ${addr}`, EPrintType.INFO);
+      return;
     }
 
-    const bind = "port " + addr.port;
-
-    debug("Listening on " + bind);
+    debug("Listening on port " + addr.port);
   }
 }
 

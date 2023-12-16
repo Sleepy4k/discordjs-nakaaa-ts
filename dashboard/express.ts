@@ -76,10 +76,37 @@ const errorHandler: ErrorRequestHandler = function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   /**
-   * Render the error page
+   * Set response status
    */
   res.status(err.status || 500);
-  res.render("pages/error");
+
+  /**
+   * Send error as JSON
+   */
+  if (req.originalUrl.split("/")[1] === "api") return res.send({
+    status: "error",
+    message: "Something went wrong! Please try again later.",
+    data: {
+      message: res.locals.message,
+      error: res.locals.error
+    }
+  });
+
+  /**
+   * Render the error page
+   */
+  res.render("pages/error", function(err: any, html: any) {
+    if (err) return res.send({
+      status: "error",
+      message: "An error occurred! Missing view directory?",
+      data: {
+        message: res.locals.message,
+        error: res.locals.error
+      }
+    });
+
+    res.send(html);
+  });
 }
 
 /**
