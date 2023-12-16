@@ -10,23 +10,9 @@
  * Link: https://github.com/sleepy4k
  *
  * March 12, 2023
- */
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
 */
-import print from "@utils/print";
-import { EPrintType } from "@enums";
 import { ICommandParam } from "@interfaces";
+import CatchError from "@classes/CatchError";
 import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
 
 const main = async (data: ICommandParam) => {
@@ -99,14 +85,10 @@ const main = async (data: ICommandParam) => {
 
       setTimeout(() => msg.delete(), 2500);
     }).catch((error: unknown) => {
-      if (error instanceof Error) print(error.message, EPrintType.ERROR);
-      else if (typeof error === "string") print(error, EPrintType.ERROR);
-      else print("Unknown error", EPrintType.ERROR);
+      new CatchError(error);
     });
   } catch (error: unknown) {
-    if (error instanceof Error) print(error.message, EPrintType.ERROR);
-    else if (typeof error === "string") print(error, EPrintType.ERROR);
-    else print("Unknown error", EPrintType.ERROR);
+    new CatchError(error);
 
     return client.sendEmbed(interaction, {
       color: "Red",
