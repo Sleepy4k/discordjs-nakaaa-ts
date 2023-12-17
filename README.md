@@ -49,7 +49,12 @@ jika sudah, isi detail data pada index.js dalam folder config. dan jalankan bot
   - localhost:3000/api/command
   - localhost:3000/api/command/:name
   - localhost:3000/api/slash
-  - localhost:3000/api/command/:name
+  - localhost:3000/api/slash/:name
+  - localhost:3000/api/invite
+  - localhost:3000/api/github
+  - localhost:3000/api/log
+  - localhost:3000/api/log/:type
+  - localhost:3000/api/log/:type/:date
 ~~~
 
 ### Catatan
@@ -108,7 +113,12 @@ if so, fill in the data details in index.js in the config folder. and run bots
   - localhost:3000/api/command
   - localhost:3000/api/command/:name
   - localhost:3000/api/slash
-  - localhost:3000/api/command/:name
+  - localhost:3000/api/slash/:name
+  - localhost:3000/api/invite
+  - localhost:3000/api/github
+  - localhost:3000/api/log
+  - localhost:3000/api/log/:type
+  - localhost:3000/api/log/:type/:date
 ~~~
 
 ### Note
