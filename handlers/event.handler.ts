@@ -16,6 +16,7 @@ import { Handler } from "@templates";
 import { IEventFile } from "@interfaces";
 import { readdir } from "node:fs/promises";
 import CatchError from "@classes/CatchError";
+import { ELogStatus } from "@enums";
 
 export default new Handler({
   name: "event",
@@ -27,21 +28,22 @@ export default new Handler({
 
       await Promise.all(filteredEvents.map(async (filteredEvent) => {
         const fileName = filteredEvent.split(".");
+        client.logStatus(fileName[0], "Event", ELogStatus.LOADING);
         const event: IEventFile = await import(`../events/${fileName[0]}.${fileName[1]}`)
           .then((event) => event.default)
           .catch((_err) => {
             return { name: null };
           });
 
-        if (!event.name) client.logStatus(fileName[0], false, "Event");
+        if (!event.name) client.logStatus(fileName[0], "Event", ELogStatus.ERROR);
         else {
           client.events.set(event.name, event);
-          client.logStatus(`${fileName[0]} (${event.name})`, true, "Event");
           client.on(event.name, (...args) => event.run(client, ...args));
+          client.logStatus(`${fileName[0]} (${event.name})`, "Event", ELogStatus.SUCCESS);
         }
       }));
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
     }
   }
 });

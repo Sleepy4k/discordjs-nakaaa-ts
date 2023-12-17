@@ -12,6 +12,7 @@
  * March 12, 2023
  */
 import { Bot } from "@server/bot";
+import { ELogStatus } from "@enums";
 import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
@@ -36,17 +37,18 @@ export default new Handler({
 
         filteredSlashs.map(async (filteredSlash) => {
           const fileName = filteredSlash.split(".");
+          client.logStatus(fileName[0], "Slash", ELogStatus.LOADING);
           const command: ICommandFile = await import(`../commands/slash/${slashDir}/${fileName[0]}.${fileName[1]}`)
             .then((command) => command.default)
             .catch((_eer) => {
               return { name: null };
             });
 
-          if (!command.name) client.logStatus(fileName[0], false, "Slash");
+          if (!command.name) client.logStatus(fileName[0], "Slash", ELogStatus.ERROR);
           else {
             slashCommands.push(command);
             client.scommands.set(command.name, command);
-            client.logStatus(command.name, true, "Slash");
+            client.logStatus(command.name, "Slash", ELogStatus.SUCCESS);
           }
         });
       }));
@@ -56,7 +58,7 @@ export default new Handler({
         else client.guilds.cache.get(guild_id)?.commands.set(slashCommands);
       });
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
     }
   }
 });

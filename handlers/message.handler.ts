@@ -12,6 +12,7 @@
  * March 12, 2023
  */
 import { Bot } from "@server/bot";
+import { ELogStatus } from "@enums";
 import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
 import { ICommandFile } from "@interfaces";
@@ -32,21 +33,22 @@ export default new Handler({
 
         filteredCommands.map(async (filteredCommand) => {
           const fileName = filteredCommand.split(".");
+          client.logStatus(fileName[0], "Message", ELogStatus.LOADING);
           const command: ICommandFile = await import(`../commands/message/${commandDir}/${fileName[0]}.${fileName[1]}`)
             .then((command) => command.default)
             .catch((_err) => {
               return { name: null };
             });
 
-          if (!command.name) client.logStatus(fileName[0], false, "Message");
+          if (!command.name) client.logStatus(fileName[0], "Message", ELogStatus.ERROR);
           else {
             client.mcommands.set(command.name, command);
-            client.logStatus(command.name, true, "Message");
+            client.logStatus(command.name, "Message", ELogStatus.SUCCESS);
           }
         });
       }));
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
     }
   }
 });
