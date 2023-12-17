@@ -84,11 +84,9 @@ const main = async (data: ICommandParam) => {
       if (ephemeral) return;
 
       setTimeout(() => msg.delete(), 2500);
-    }).catch((error: unknown) => {
-      new CatchError(error);
-    });
+    }).catch((error: unknown) => CatchError.print(error));
   } catch (error: unknown) {
-    new CatchError(error);
+    CatchError.print(error);
 
     return client.sendEmbed(interaction, {
       color: "Red",
