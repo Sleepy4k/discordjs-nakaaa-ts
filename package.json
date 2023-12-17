@@ -6,14 +6,15 @@
   "scripts": {
     "start": "npm run clean && npm run build && npm run copy && npm run exec",
     "dev": "nodemon --config nodemon.json",
-    "prod": "npm run clean && npm run build && npm run copy && npm run package && npm run env && npm run misc && npm run exec",
+    "prod": "npm run clean && npm run build && npm run copy && npm run package && npm run env && npm run misc && npm run readme",
     "exec": "node ./dist/index.js",
     "build": "tsc -p tsconfig.json && tsc-alias",
     "clean": "rimraf ./dist",
     "copy": "copyfiles -u 1 \"./dashboard/views/**/*\" \"./dist/dashboard/\" && copyfiles -u 1 \"./dashboard/public/**/*\" \"./dist/dashboard/\"",
-    "package": "copyfiles -u 1 \"./package.json\" \"./dist/\" && copyfiles -u 1 \"./package-lock.json\" \"./dist/\"",
-    "env": "copyfiles -u 1 \"./.env\" \"./dist/\" && copyfiles -u 1 \"./.env.example\" \"./dist/\"",
-    "misc": "copyfiles -u 1 \"./.gitignore\" \"./dist/\" && copyfiles -u 1 \"./.editorconfig\" \"./dist/\"",
+    "package": "copyfiles -f \"./package.json\" \"./dist/\" && copyfiles -f \"./package-lock.json\" \"./dist/\"",
+    "env": "copyfiles -f \"./.env\" \"./dist/\" && copyfiles -f \"./.env.example\" \"./dist/\"",
+    "misc": "copyfiles -f \"./.gitignore\" \"./dist/\" && copyfiles -f \"./.editorconfig\" \"./dist/\"",
+    "readme": "copyfiles -f \"./note.md\" \"./dist/\" && copyfiles -f \"./README.md\" \"./dist/\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
