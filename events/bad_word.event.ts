@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
+import { print } from "@utils";
 import { Bot } from "@server/bot";
 import { Event } from "@templates";
 import { EPrintType } from "@enums";
@@ -38,9 +38,7 @@ export default new Event({
         title: "Bad Word Detected",
         description: `Hey ${message.author}, you can't say that!`,
         footer: client.getFooter(message)
-      }).then((msg) => setTimeout(() => msg.delete(), 2500)).catch((error: unknown) => {
-        new CatchError(error);
-      });
+      }).then((msg) => setTimeout(() => msg.delete(), 2500)).catch((error: unknown) => CatchError.print(error));
     });
   }
 });

@@ -11,11 +11,10 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
 import { Bot } from "@server/bot";
-import regExp from "@utils/regExp";
 import { Event } from "@templates";
 import { EPrintType } from "@enums";
+import { print, regExp } from "@utils";
 import CatchError from "@classes/CatchError";
 import { Events, Message, PermissionsBitField } from "discord.js";
 
@@ -103,9 +102,9 @@ export default new Event({
     else {
       try {
         print(`${message.author.tag} (${message.author.id}) ran command ${messageCommand.name} in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
-        await messageCommand.run(client, message, args, client.prefix);
+        return await messageCommand.run(client, message, args, client.prefix);
       } catch (error: unknown) {
-        new CatchError(error);
+        CatchError.print(error);
       }
     }
   }

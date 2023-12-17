@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
+import { print } from "@utils";
 import { Bot } from "@server/bot";
 import { Event } from "@templates";
 import CatchError from "@classes/CatchError";
@@ -34,7 +34,7 @@ export default new Event({
         status: client.config.activity.type
       });
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
     }
   }
 });

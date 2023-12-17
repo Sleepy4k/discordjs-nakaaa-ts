@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import print from "@utils/print";
+import { print } from "@utils";
 import { Bot } from "@server/bot";
 import { Event } from "@templates";
 import { EPrintType } from "@enums";
@@ -59,9 +59,9 @@ export default new Event({
     else {
       try {
         print(`${interaction.user.tag} (${interaction.user.id}) ran command ${command.name} in ${interaction.guild.name} (${interaction.guild.id})`, EPrintType.INFO);
-        await command.run(client, interaction, interaction.options, client.prefix);
+        return await command.run(client, interaction, interaction.options, client.prefix);
       } catch (error: unknown) {
-        new CatchError(error);
+        CatchError.print(error);
       }
     }
   }
