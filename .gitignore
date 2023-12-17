@@ -30,3 +30,6 @@ yarn-error.*
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Logs file
+logs/
