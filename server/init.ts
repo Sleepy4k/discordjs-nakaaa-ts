@@ -12,7 +12,7 @@
  * March 12, 2023
  */
 import { Bot } from "./bot";
-import createServer from "@dashboard/bin/www";
+import createServer from "@dashboard/bin";
 
 /**
  * Initialize the bot
@@ -40,4 +40,4 @@ createServer(client);
  *
  * @type {Promise<void>}
  */
-client.build(client.config.bot.token).catch((err) => console.error(err));
+client.build(client.config.bot.token);

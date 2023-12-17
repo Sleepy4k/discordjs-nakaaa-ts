@@ -12,11 +12,11 @@
  * March 12, 2023
  */
 import config from "@config";
-import print from "@utils/print";
-import { EPrintType } from "@enums";
+import { print } from "@utils";
 import { Player } from "discord-player";
 import CharacterAI from "node_characterai";
 import CatchError from "@classes/CatchError";
+import { ELogStatus, EPrintType } from "@enums";
 import { ICommandFile, IEmbedData, IEmbedBuilder } from "@interfaces";
 import {
   Client,
@@ -100,12 +100,22 @@ export class Bot extends Client {
    * @returns {Promise<void>}
    */
   async build(token: string): Promise<void> {
-    await loadHandlers(this);
-    await this.player.extractors.loadDefault();
+    try {
+      const { list } = config.handler;
 
-    this.login(token).catch((error: unknown) => {
-      new CatchError(error);
-    });
+      list.forEach(async (file) => {
+        const handler = await import(`../handlers/${file}.handler`).then((handler) => handler.default);
+        this.logStatus(handler.name, "Handler", ELogStatus.LOADING);
+        await handler.run(this).catch(() => this.logStatus(handler.name, "Handler", ELogStatus.ERROR));
+        this.logStatus(handler.name, "Handler", ELogStatus.SUCCESS);
+      });
+
+      await this.player.extractors.loadDefault();
+
+      this.login(token);
+    } catch (error: unknown) {
+      CatchError.print(error);
+    }
   }
 
   /**
@@ -139,7 +149,7 @@ export class Bot extends Client {
         fetchReply: fetchReply
       });
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
 
       return await this.send(interaction, {
         content: "Something went wrong",
@@ -174,7 +184,7 @@ export class Bot extends Client {
         iconURL: client.user.displayAvatarURL({ forceStatic: false, size: 512 })
       };
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
 
       return {
         text: `${config.bot.name} | Bot by ${config.bot.author}`,
@@ -206,7 +216,7 @@ export class Bot extends Client {
         fetchReply: data.fetchReply
       });
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
 
       return await interaction.reply({
         content: "Something went wrong",
@@ -262,11 +272,29 @@ export class Bot extends Client {
    *
    * @returns {void}
    */
-  logStatus(name: string, isLoaded: boolean, type: string): void {
-    const statusIcon = isLoaded ? "\x1b[32m✅\x1b[0m" : "\x1b[31m❌\x1b[0m";
-    const statusText = isLoaded ? "Loaded" : "Not Loaded";
+  logStatus(name: string, category: string, type: ELogStatus): void {
+    let icon, text;
 
-    print(`${type} : ${name} | Status: ${statusIcon} ${statusText}`, EPrintType.INFO);
+    switch (type) {
+      case ELogStatus.SUCCESS:
+        icon = this.config.emoji.success;
+        text = "Loaded";
+        break;
+      case ELogStatus.LOADING:
+        icon = this.config.emoji.loading;
+        text = "Loading";
+        break;
+      case ELogStatus.ERROR:
+        icon = this.config.emoji.error;
+        text = "Error";
+        break;
+      default:
+        icon = "";
+        text = "";
+        break;
+    }
+
+    print(`${category} : ${name} | Status: ${icon} ${text}`, EPrintType.INFO);
   }
 
   /**
@@ -288,24 +316,7 @@ export class Bot extends Client {
       this.chatbot.AIChat = await characterAI.createOrContinueChat(charConfig.charId);
       this.chatbot.isAIAuthenticated = true;
     } catch (error: unknown) {
-      new CatchError(error);
+      CatchError.print(error);
     }
   }
-}
-
-/**
- * Load all handlers
- *
- * @param {Bot} client
- *
- * @returns {Promise<void>}
- */
-async function loadHandlers(client: Bot): Promise<void> {
-  const { list } = config.handler;
-
-  list.forEach(async (file) => {
-    const handler = await import(`../handlers/${file}.handler`).then((handler) => handler.default);
-    client.logStatus(handler.name, true, "Handler");
-    await handler.run(client);
-  });
 }
