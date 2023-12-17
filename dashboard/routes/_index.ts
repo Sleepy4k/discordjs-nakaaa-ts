@@ -1,19 +1,20 @@
 /**
  * Module dependencies.
  */
-import api from "./api";
-import web from "./web";
 import { Router } from "express";
+import apiRoute from "./api/_index";
+import webRoute from "./web/_index";
 
-/*
+/**
  * Initialize router.
+ * @type {Router}
  */
-const router = Router();
+const router: Router = Router();
 
 /* Web Route. */
-router.use("/", web);
+router.use("/", webRoute);
 
 /* Api Route. */
-router.use("/api/", api);
+router.use("/api/", apiRoute);
 
 export default router;

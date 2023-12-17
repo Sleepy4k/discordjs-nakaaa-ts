@@ -1,14 +1,25 @@
 /**
- * Module dependencies.
+ * Coding service by Sleepy4k <sarahpalastring@gmail.com>
+ *
+ * Reselling this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Written by:
+ * Apri Pandu Wicaksono
+ *
+ * Link: https://github.com/sleepy4k
+ *
+ * March 12, 2023
  */
 import logger from "morgan";
 import { join } from "path";
-import express from "express";
+// import helmet from "helmet";
 import ejsMate from "ejs-mate";
-import { version } from "discord.js";
-import type { ErrorRequestHandler } from "express";
-import createError from "http-errors";
+import express, { Express } from "express";
 import cookieSession from "cookie-session";
+import localHandler from "./handlers/local.handler";
+import notFound from "@dashboard/handlers/missing.handler";
+import errorHandler from "@dashboard/handlers/error.handler";
 
 /**
  * Import routes
@@ -17,8 +28,9 @@ import routes from "@dashboard/routes/_index";
 
 /**
  * Create express app
+ * @type {Express}
  */
-const app = express();
+const app: Express = express();
 
 /**
  * View engine setup
@@ -31,6 +43,7 @@ app.use('/public', express.static(join(__dirname, "public")));
 /**
  * Setup logger and middlewares
  */
+// app.use(helmet()); // enable if you don't use any iframe method
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,15 +56,7 @@ app.use(cookieSession({
 /**
  * Set locals
  */
-app.use(function (req, res, next) {
-  res.locals.data = {};
-  res.locals.discord = version;
-  res.locals.node = process.version;
-  res.locals.title = req.app.get("client").config.web.name;
-  res.locals.author = req.app.get("client").config.bot.author;
-  res.locals.baseUrl = `${req.protocol}://${req.hostname}:${req.app.get("port")}`;
-  next();
-});
+app.use(localHandler);
 
 /**
  * Routes initialization
@@ -61,53 +66,7 @@ app.use("/", routes);
 /**
  * Catch 404 and forward to error handler
  */
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-/**
- * Error handler
- */
-const errorHandler: ErrorRequestHandler = function (err, req, res, next) {
-  /**
-   * Set locals, only providing error in development
-   */
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  /**
-   * Set response status
-   */
-  res.status(err.status || 500);
-
-  /**
-   * Send error as JSON
-   */
-  if (req.originalUrl.split("/")[1] === "api") return res.send({
-    status: "error",
-    message: "Something went wrong! Please try again later.",
-    data: {
-      message: res.locals.message,
-      error: res.locals.error
-    }
-  });
-
-  /**
-   * Render the error page
-   */
-  res.render("pages/error", function(err: any, html: any) {
-    if (err) return res.send({
-      status: "error",
-      message: "An error occurred! Missing view directory?",
-      data: {
-        message: res.locals.message,
-        error: res.locals.error
-      }
-    });
-
-    res.send(html);
-  });
-}
+app.use(notFound);
 
 /**
  * Set error handler
