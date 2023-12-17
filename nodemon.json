@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/nodemon.json",
+  "stdin": false,
+  "verbose": true,
+  "exitcrash": false,
+  "exec": "npm run start",
+  "watch": ["./*"],
+  "ext": "ts,ejs",
+  "ignore" : [
+    "dist/*",
+    ".git/*",
+    ".vscode/*",
+    "node_modules/*"
+  ]
+}
