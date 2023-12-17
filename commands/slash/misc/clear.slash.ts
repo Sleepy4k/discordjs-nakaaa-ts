@@ -14,7 +14,6 @@
 import { Bot } from "@server/bot";
 import { ESlashOpt } from "@enums";
 import { Command } from "@templates";
-import type { TCommandFunc } from "@types";
 import main from "@functions/misc/clear.func";
 import { Message, PermissionFlagsBits, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
 
