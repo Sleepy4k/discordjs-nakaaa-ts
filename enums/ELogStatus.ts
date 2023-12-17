@@ -11,12 +11,10 @@
  *
  * March 12, 2023
  */
-import ESlashOpt from "./ESlashOpt";
-import EPrintType from "./EPrintType";
-import ELogStatus from "./ELogStatus";
+enum ELogStatus {
+  ERROR = "Error",
+  LOADING = "Loading",
+  SUCCESS = "Loaded"
+}
 
-export {
-  ESlashOpt,
-  EPrintType,
-  ELogStatus
-};
+export default ELogStatus;
