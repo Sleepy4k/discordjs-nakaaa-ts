@@ -14,6 +14,9 @@
 import fs from "fs";
 
 class FileStream {
+  /**
+   * Constructor
+   */
   constructor() {
     throw new Error("This class cannot be instantiated");
   }

@@ -15,8 +15,16 @@ import { EPrintType } from "@enums";
 import FileStream from "@classes/FileStream";
 
 class LogToFile {
+  /**
+   * Date
+   *
+   * @type {string}
+   */
   private static date: string = new Date().toISOString().split("T")[0];
 
+  /**
+   * Constructor
+   */
   constructor() {
     throw new Error("This class cannot be instantiated");
   }
