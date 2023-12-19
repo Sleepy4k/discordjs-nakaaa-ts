@@ -137,6 +137,7 @@ export class Bot extends Client {
       if (data.color) embed.setColor(data.color);
       if (data.image) embed.setImage(data.image);
       if (data.footer) embed.setFooter(data.footer);
+      if (data.fields) embed.setFields(data.fields);
       if (data.author) embed.setAuthor(data.author);
       if (data.thumbnail) embed.setThumbnail(data.thumbnail);
       if (data.description) embed.setDescription(data.description);
