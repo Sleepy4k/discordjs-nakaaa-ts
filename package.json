@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sleepy4k/discordjs-nakaaa.git"
+    "url": "git+https://github.com/sleepy4k/discordjs-nakaaa-ts.git"
   },
   "keywords": [
     "github",
@@ -34,11 +34,11 @@
     "api"
   ],
   "author": "benjamin4k",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sleepy4k/discordjs-nakaaa/issues"
+    "url": "https://github.com/sleepy4k/discordjs-nakaaa-ts/issues"
   },
-  "homepage": "https://github.com/sleepy4k/discordjs-nakaaa#readme",
+  "homepage": "https://github.com/sleepy4k/discordjs-nakaaa-ts#readme",
   "dependencies": {
     "@discord-player/extractor": "^4.4.5",
     "@discordjs/opus": "^0.9.0",
