@@ -11,11 +11,13 @@
  *
  * March 12, 2023
  */
+import EOSType from "./EOSType";
 import ESlashOpt from "./ESlashOpt";
 import EPrintType from "./EPrintType";
 import ELogStatus from "./ELogStatus";
 
 export {
+  EOSType,
   ESlashOpt,
   EPrintType,
   ELogStatus
