@@ -40,6 +40,7 @@
       "@handlers/*": ["./handlers/*"],
       "@dashboard/*": ["./dashboard/*"],
       "@functions/*": ["./functions/*"],
+      "@services": ["./services/_index"],
       "@templates": ["./templates/_index"],
       "@interfaces": ["./interfaces/_index"]
     },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
