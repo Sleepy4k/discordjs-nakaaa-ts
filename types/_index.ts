@@ -25,4 +25,4 @@ export type {
   TEventFunc,
   TCommandFunc,
   THandlerFunc
-}
+};
