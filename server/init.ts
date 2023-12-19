@@ -40,4 +40,4 @@ createServer(client);
  *
  * @type {Promise<void>}
  */
-client.build(client.config.bot.token);
+client.build();

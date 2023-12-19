@@ -95,13 +95,11 @@ export class Bot extends Client {
   /**
    * Build the bot with token
    *
-   * @param {string} token
-   *
    * @returns {Promise<void>}
    */
-  async build(token: string): Promise<void> {
+  async build(): Promise<void> {
     try {
-      const { list } = config.handler;
+      const { list } = this.config.handler;
 
       list.forEach(async (file) => {
         const handler = await import(`../handlers/${file}.handler`).then((handler) => handler.default);
@@ -111,6 +109,8 @@ export class Bot extends Client {
       });
 
       await this.player.extractors.loadDefault();
+
+      const token = this.config.bot.token || undefined;
 
       this.login(token);
     } catch (error: unknown) {
@@ -166,30 +166,30 @@ export class Bot extends Client {
    * @param {CommandInteraction | Message<boolean>} client
    * @param {string | undefined} type
    *
-   * @returns {object}
+   * @returns {EmbedFooterOptions}
    */
   getFooter(client: CommandInteraction | Message<boolean>, type?: string): EmbedFooterOptions {
     try {
       if (!client || type) return {
-        text: `${config.bot.name} | Bot by ${config.bot.author}`,
-        iconURL: config.bot.icon,
+        text: `${this.config.bot.name} | Bot by ${this.config.bot.author}`,
+        iconURL: this.config.bot.icon,
       };
 
       if (client instanceof Message) return {
-        text: `Requested by ${client.author.username} | Bot by ${config.bot.author}`,
+        text: `Requested by ${client.author.username} | Bot by ${this.config.bot.author}`,
         iconURL: client.author.displayAvatarURL({ forceStatic: false, size: 512 })
       };
 
       return {
-        text: `Requested by ${client.user.username} | Bot by ${config.bot.author}`,
+        text: `Requested by ${client.user.username} | Bot by ${this.config.bot.author}`,
         iconURL: client.user.displayAvatarURL({ forceStatic: false, size: 512 })
       };
     } catch (error: unknown) {
       CatchError.print(error);
 
       return {
-        text: `${config.bot.name} | Bot by ${config.bot.author}`,
-        iconURL: config.bot.icon,
+        text: `${this.config.bot.name} | Bot by ${this.config.bot.author}`,
+        iconURL: this.config.bot.icon,
       };
     }
   }
@@ -233,7 +233,7 @@ export class Bot extends Client {
    * @param {CommandInteraction | Message<boolean>} interaction
    * @param {ICommandFile} command
    *
-   * @returns {Boolean|Number}
+   * @returns {boolean | number}
    */
   cooldown(interaction: CommandInteraction | Message<boolean>, command: ICommandFile): boolean | number {
     if (!interaction || !command) return false;
@@ -267,9 +267,9 @@ export class Bot extends Client {
   /**
    * Set log status for console log
    *
-   * @param {String} name
-   * @param {Boolean} isLoaded
-   * @param {String} type
+   * @param {string} name
+   * @param {string} category
+   * @param {ELogStatus} type
    *
    * @returns {void}
    */
