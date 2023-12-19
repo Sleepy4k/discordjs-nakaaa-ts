@@ -35,8 +35,8 @@ const main = async (data: ICommandParam) => {
   }, false, true);
 
   if ('react' in poll) {
-    await poll.react("👍");
-    await poll.react("👎");
+    await poll.react(client.config.emoji.thumbsUp);
+    await poll.react(client.config.emoji.thumbsDown);
     return;
   } else return client.sendEmbed(interaction, {
     color: "Red",
