@@ -12,9 +12,10 @@
  * March 12, 2023
  */
 import {
+  EmbedField,
   ColorResolvable,
   EmbedFooterOptions,
-  EmbedAuthorOptions
+  EmbedAuthorOptions,
 } from "discord.js";
 
 interface IEmbedBuilder {
@@ -57,6 +58,11 @@ interface IEmbedBuilder {
    * @type {EmbedAuthorOptions | null}
    */
   author?: EmbedAuthorOptions | null;
+
+  /**
+   * @type {EmbedField[] | null}
+   */
+  fields?: EmbedField[] | null;
 }
 
 export default IEmbedBuilder;
