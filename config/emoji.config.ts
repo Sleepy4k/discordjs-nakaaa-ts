@@ -17,8 +17,10 @@ const emoji = {
   success: "✅",
   error: "❌",
   loading: "🔃",
-  warn: "⚠️",
-  info: "ℹ️"
+  thumbsUp: "👍",
+  thumbsDown: "👎",
+  pingPong: "🏓",
+  clock: "🕒"
 }
 
 export default emoji;
