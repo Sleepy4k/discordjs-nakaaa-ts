@@ -13,7 +13,6 @@
  */
 import logger from "morgan";
 import { join } from "path";
-// import helmet from "helmet";
 import ejsMate from "ejs-mate";
 import express, { Express } from "express";
 import cookieSession from "cookie-session";
@@ -43,7 +42,6 @@ app.use('/public', express.static(join(__dirname, "public")));
 /**
  * Setup logger and middlewares
  */
-// app.use(helmet()); // enable if you don't use any iframe method
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
