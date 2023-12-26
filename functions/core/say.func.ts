@@ -31,7 +31,7 @@ const main = async (data: ICommandParam) => {
     color: "Navy",
     description: `\`\`\`${say}\`\`\``,
     footer: client.getFooter(interaction, "basic"),
-  }, ephemeral);
+  }, false);
 };
 
 export default main;
