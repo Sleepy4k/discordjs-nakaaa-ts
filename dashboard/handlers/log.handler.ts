@@ -11,31 +11,29 @@
  *
  * March 12, 2023
  */
-import { version } from "discord.js";
+import { print } from "@utils";
+import { EPrintType } from "@enums";
 import { NextFunction, Request, Response } from 'express';
 import type THandlerFile from "@dashboard/types/THandlerFile";
 
 /**
  * Set locals
- *
+ * 
  * @param {Request} req
  * @param {Response} res
  * @param {NextFunction} next
- *
+ * 
  * @type {THandlerFile}
- *
+ * 
  * @returns {void}
  */
-const localHandler: THandlerFile = (req: Request, res: Response, next: NextFunction): void => {
+const logHandler: THandlerFile = (req: Request, res: Response, next: NextFunction): void => {
+  const statusCode = String(res.statusCode);
+
   /**
-   * Set locals
+   * Print request and log it
    */
-  res.locals.data = {};
-  res.locals.discord = version;
-  res.locals.node = process.version;
-  res.locals.title = req.app.get("client").config.web.name;
-  res.locals.author = req.app.get("client").config.bot.author;
-  res.locals.baseUrl = `${req.protocol}://${req.hostname}:${req.app.get("port")}`;
+  print(`New request to '${req.url}' using '${req.method}' method with status '${statusCode}' `, EPrintType.WEB)
 
   /**
    * Continue
@@ -43,4 +41,4 @@ const localHandler: THandlerFile = (req: Request, res: Response, next: NextFunct
   next();
 }
 
-export default localHandler;
+export default logHandler;

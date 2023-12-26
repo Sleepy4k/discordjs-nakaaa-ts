@@ -20,10 +20,10 @@ import { NextFunction, Request, Response } from 'express';
  * @param {Response} res
  * @param {NextFunction} next
  *
- * @type {TLocalFile}
+ * @type {THandlerFile}
  *
  * @returns {void}
  */
-type TLocalFile = (req: Request, res: Response, next: NextFunction) => void;
+type THandlerFile = (req: Request, res: Response, next: NextFunction) => void;
 
-export default TLocalFile;
+export default THandlerFile;

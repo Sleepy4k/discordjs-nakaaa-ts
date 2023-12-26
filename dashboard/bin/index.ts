@@ -61,7 +61,7 @@ const createServer = (client: Bot): void => {
   /**
    * Listen on provided port, on all network interfaces.
    */
-  server.listen(port, () => print(`Dashboard is running on ${hostname}:${port}`, EPrintType.INFO));
+  server.listen(port, () => print(`Dashboard is running on ${hostname}:${port}`, EPrintType.WEB));
   server.on("error", (err: NodeJS.ErrnoException) => onError(err, port));
   server.on("listening", () => onListening(server, debug));
 }

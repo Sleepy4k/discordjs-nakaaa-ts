@@ -11,11 +11,12 @@
  *
  * March 12, 2023
  */
-import logger from "morgan";
+// import logger from "morgan";
 import { join } from "path";
 import ejsMate from "ejs-mate";
 import express, { Express } from "express";
 import cookieSession from "cookie-session";
+import logHandler from "./handlers/log.handler";
 import localHandler from "./handlers/local.handler";
 import notFound from "@dashboard/handlers/missing.handler";
 import errorHandler from "@dashboard/handlers/error.handler";
@@ -42,7 +43,8 @@ app.use('/public', express.static(join(__dirname, "public")));
 /**
  * Setup logger and middlewares
  */
-app.use(logger("dev"));
+// app.use(logger("dev"));
+app.use(logHandler);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieSession({
