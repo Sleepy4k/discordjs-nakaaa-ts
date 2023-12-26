@@ -40,7 +40,7 @@ export default new Handler({
           client.logStatus(fileName[0], "Slash", ELogStatus.LOADING);
           const command: ICommandFile = await import(`../commands/slash/${slashDir}/${fileName[0]}.${fileName[1]}`)
             .then((command) => command.default)
-            .catch((_eer) => {
+            .catch((_err) => {
               return { name: null };
             });
 
