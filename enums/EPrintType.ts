@@ -16,6 +16,7 @@ enum EPrintType {
   WARN = "warn",
   DEBUG = "debug",
   INFO = "info",
+  WEB = "web",
   DEFAULT = "default"
 }
 
