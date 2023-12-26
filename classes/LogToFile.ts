@@ -31,7 +31,7 @@ class LogToFile {
 
   /**
    * Get log path
-   * 
+   *
    * @param {EPrintType} type
    * @param {string} date
    *
@@ -53,6 +53,9 @@ class LogToFile {
         break;
       case EPrintType.INFO:
         logPath += "/info";
+        break;
+      case EPrintType.WEB:
+        logPath += "/web";
         break;
       default:
         logPath += "/default";
