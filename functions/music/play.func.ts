@@ -81,7 +81,7 @@ const main = async (data: ICommandParam) => {
         if (!ephemeral) setTimeout(() => msg.delete(), 2500);
       });
 
-      if (client.player.queues.has(interaction.guild)) queue = client.player.nodes.get(interaction.guild);
+      if (client.player.queues.has(guild)) queue = client.player.nodes.get(guild);
       else {
         await client.sendEmbed(interaction, {
           color: "Green",
@@ -92,7 +92,7 @@ const main = async (data: ICommandParam) => {
           if (!ephemeral) setTimeout(() => msg.delete(), 2500);
         });
 
-        queue = client.player.nodes.create(interaction.guild, {
+        queue = client.player.nodes.create(guild, {
           volume: 75,
           selfDeaf: true,
           leaveOnEnd: false,
@@ -102,7 +102,7 @@ const main = async (data: ICommandParam) => {
           metadata: {
             channel: interaction.channel,
             requestedBy: interaction.member,
-            client: interaction.guild.members.me
+            client: guild.members.me
           }
         });
       }
