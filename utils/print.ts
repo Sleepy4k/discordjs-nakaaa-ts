@@ -46,6 +46,10 @@ const print: TPrint = (message: string, type: EPrintType = EPrintType.DEFAULT): 
       data = `[${date} ${time}] [INFO] ${message}`;
       LogToFile.write(data, EPrintType.INFO);
       break;
+    case EPrintType.WEB:
+      data = `[${date} ${time}] [WEB] ${message}`;
+      LogToFile.write(data, EPrintType.WEB);
+      break;
     default:
       data = `[${date} ${time}] ${message}`;
       LogToFile.write(data, EPrintType.DEFAULT);
