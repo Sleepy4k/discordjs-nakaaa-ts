@@ -23,12 +23,12 @@ export default new Handler({
 
   run: async (client: Bot): Promise<void> => {
     try {
-      const commandDirs = await readdir("./commands/message");
+      const commandDirs = await readdir("./src/commands/message");
 
       await Promise.all(commandDirs.map(async (commandDir) => {
         if (client.config.nsfw.enable && commandDir === client.config.nsfw.directory) return;
 
-        const commands = await readdir(`./commands/message/${commandDir}`);
+        const commands = await readdir(`./src/commands/message/${commandDir}`);
         const filteredCommands = commands.filter((file) => file.endsWith(".ts"));
 
         filteredCommands.map(async (filteredCommand) => {

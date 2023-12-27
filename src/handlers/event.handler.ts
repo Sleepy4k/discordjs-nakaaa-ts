@@ -12,18 +12,18 @@
  * March 12, 2023
  */
 import { Bot } from "@server/bot";
+import { ELogStatus } from "@enums";
 import { Handler } from "@templates";
 import { IEventFile } from "@interfaces";
 import { readdir } from "node:fs/promises";
 import CatchError from "@classes/CatchError";
-import { ELogStatus } from "@enums";
 
 export default new Handler({
   name: "event",
 
   run: async (client: Bot): Promise<void> => {
     try {
-      const events = await readdir("./events");
+      const events = await readdir("./src/events");
       const filteredEvents = events.filter((file) => file.endsWith(".ts"));
 
       await Promise.all(filteredEvents.map(async (filteredEvent) => {

@@ -38,7 +38,7 @@ class LogToFile {
    * @returns {void}
    */
   private static getPath(type: EPrintType, date?: string): string {
-    let logPath = `${__dirname}/../logs`;
+    let logPath = `${__dirname}/../../logs`;
     FileStream.create(logPath);
 
     switch (type) {

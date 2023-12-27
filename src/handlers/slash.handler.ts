@@ -27,12 +27,12 @@ export default new Handler({
     try {
       let slashCommands: any = [];
 
-      const slashDirs = await readdir("./commands/slash");
+      const slashDirs = await readdir("./src/commands/slash");
 
       await Promise.all(slashDirs.map(async (slashDir) => {
         if (client.config.nsfw.enable && slashDir === client.config.nsfw.directory) return;
 
-        const slashs = await readdir(`./commands/slash/${slashDir}`);
+        const slashs = await readdir(`./src/commands/slash/${slashDir}`);
         const filteredSlashs = slashs.filter((file) => file.endsWith(".ts"));
 
         filteredSlashs.map(async (filteredSlash) => {
