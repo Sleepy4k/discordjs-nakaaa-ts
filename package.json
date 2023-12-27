@@ -10,7 +10,7 @@
     "exec": "node ./dist/index.js",
     "build": "tsc -p tsconfig.json && tsc-alias",
     "clean": "rimraf ./dist",
-    "copy": "copyfiles -u 1 \"./dashboard/views/**/*\" \"./dist/dashboard/\" && copyfiles -u 1 \"./dashboard/public/**/*\" \"./dist/dashboard/\"",
+    "copy": "copyfiles -u 1 \"./src/dashboard/views/**/*\" \"./dist/src/\" && copyfiles -u 1 \"./src/dashboard/public/**/*\" \"./dist/src/\"",
     "package": "copyfiles -f \"./package.json\" \"./dist/\" && copyfiles -f \"./package-lock.json\" \"./dist/\"",
     "env": "copyfiles -f \"./.env.example\" \"./dist/\"",
     "misc": "copyfiles -f \"./.gitignore\" \"./dist/\" && copyfiles -f \"./.editorconfig\" \"./dist/\"",
