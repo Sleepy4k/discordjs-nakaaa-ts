@@ -11,8 +11,6 @@
  *
  * March 12, 2023
  */
-import "dotenv/config.js";
-
 const emoji = {
   success: "✅",
   error: "❌",
