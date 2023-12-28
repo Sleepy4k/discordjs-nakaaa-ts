@@ -14,8 +14,9 @@
 import web from "./web.config";
 import bot from "./bot.config";
 import nsfw from "./nsfw.config";
-import slash from "./slash.config";
 import emoji from "./emoji.config";
+import slash from "./slash.config";
+import filter from "./filter.config";
 import chatbot from "./chatbot.config";
 import handler from "./handler.config";
 import activity from "./activity.config";
@@ -28,6 +29,7 @@ const config = {
   nsfw,
   emoji,
   slash,
+  filter,
   chatbot,
   handler,
   activity,
