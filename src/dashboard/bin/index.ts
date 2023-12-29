@@ -14,7 +14,7 @@
 import http from "http";
 import debugLib from "debug";
 import { print } from "@utils";
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { EPrintType } from "@enums";
 import app from "@dashboard/express";
 import slugify from "@dashboard/utils/slugify";
