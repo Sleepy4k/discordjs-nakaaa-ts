@@ -23,6 +23,12 @@ class Command {
   name: string
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias?: string | string[]
+
+  /**
    * Event description
    * @type {string}
    */
@@ -77,6 +83,7 @@ class Command {
    */
   constructor(params: ICommandFile) {
     this.name = params.name;
+    this.alias = params.alias;
     this.description = params.description;
     this.userPermissions = params.userPermissions;
     this.botPermissions = params.botPermissions;
