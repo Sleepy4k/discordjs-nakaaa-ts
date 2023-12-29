@@ -12,7 +12,7 @@
  * March 12, 2023
  */
 import { print } from "@utils";
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { Event } from "@templates";
 import { EPrintType } from "@enums";
 import CatchError from "@classes/CatchError";

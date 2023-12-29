@@ -12,7 +12,7 @@
  * March 12, 2023
  */
 import { inspect } from "util";
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { Event } from "@templates";
 import { EmbedBuilder, Events, WebhookClient } from "discord.js";
 
