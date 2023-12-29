@@ -12,7 +12,7 @@
  * March 12, 2023
  */
 import config from "@config";
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { ESlashOpt } from "@enums";
 import { Command } from "@templates";
 import main from "@functions/music/filter.func";

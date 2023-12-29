@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { Command } from "@templates";
 import main from "@functions/misc/clear.func";
 import { Message, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
@@ -22,6 +22,12 @@ export default new Command({
    * @type {string}
    */
   name: "clear",
+
+  /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["purge", "delete", "bulk-delete", "bulkdelete", "cls"],
 
   /**
    * Event description

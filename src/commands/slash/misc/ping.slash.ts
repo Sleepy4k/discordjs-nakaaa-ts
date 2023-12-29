@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { Command } from "@templates";
 import main from "@functions/misc/ping.func";
 import { Message, PermissionFlagsBits, ApplicationCommandType, ChatInputCommandInteraction } from "discord.js";
