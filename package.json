@@ -1,18 +1,18 @@
 {
-  "name": "discordjs-nakaaa",
-  "version": "2.0.0",
-  "description": "Simple bot but have some feature built with discord js v14 and typescript",
+  "name": "discordjs-nakaaa-ts",
+  "version": "1.1.6",
+  "description": "Standalone bot but have some feature built with discord js v14 and typescript",
   "main": "index.ts",
   "scripts": {
-    "start": "npm run clean && npm run build && npm run copy && npm run exec",
+    "start": "npm run clean && npm run build && npm run copy && npm run package && npm run exec",
     "dev": "nodemon --config nodemon.json",
     "prod": "npm run clean && npm run build && npm run copy && npm run package && npm run env && npm run misc && npm run readme",
     "exec": "node ./dist/index.js",
     "build": "tsc -p tsconfig.json && tsc-alias",
     "clean": "rimraf ./dist",
     "copy": "copyfiles -u 1 \"./src/dashboard/views/**/*\" \"./dist/src/\" && copyfiles -u 1 \"./src/dashboard/public/**/*\" \"./dist/src/\"",
-    "package": "copyfiles -f \"./package.json\" \"./dist/\" && copyfiles -f \"./package-lock.json\" \"./dist/\"",
     "env": "copyfiles -f \"./.env.example\" \"./dist/\"",
+    "package": "copyfiles -f \"./package-dist.json\" \"./dist/\" && node -e \"require('fs').rename('./dist/package-dist.json', './dist/package.json', function(err) {})\"",
     "misc": "copyfiles -f \"./.gitignore\" \"./dist/\" && copyfiles -f \"./.editorconfig\" \"./dist/\"",
     "readme": "copyfiles -f \"./note.md\" \"./dist/\" && copyfiles -f \"./README.md\" \"./dist/\"",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -34,7 +34,7 @@
     "api"
   ],
   "author": "benjamin4k",
-  "license": "MIT",
+  "license": "MIT License",
   "bugs": {
     "url": "https://github.com/sleepy4k/discordjs-nakaaa-ts/issues"
   },
