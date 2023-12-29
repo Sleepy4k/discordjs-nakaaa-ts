@@ -11,4 +11,4 @@
  *
  * March 12, 2023
  */
-import "@server/init"
+import "@core/init"
