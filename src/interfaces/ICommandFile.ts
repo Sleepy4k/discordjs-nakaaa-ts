@@ -21,6 +21,11 @@ interface ICommandFile {
   name: string;
 
   /**
+   * @type {string | string[]}
+   */
+  alias?: string | string[];
+
+  /**
    * @type {string}
    */
   description: string;
