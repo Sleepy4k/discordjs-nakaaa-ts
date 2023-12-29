@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 import { ELogStatus } from "@enums";
 import { Handler } from "@templates";
 import { readdir } from "node:fs/promises";
@@ -44,6 +44,18 @@ export default new Handler({
           else {
             client.mcommands.set(command.name, command);
             client.logStatus(command.name, "Message", ELogStatus.SUCCESS);
+
+            if (command.alias) {
+              if (typeof command.alias === "string") {
+                client.logStatus(command.alias + " (" + command.name + ")", "Message", ELogStatus.LOADING);
+                client.mcommands.set(command.alias, command);
+                client.logStatus(command.alias + " (" + command.name + ")", "Message", ELogStatus.SUCCESS);
+              } else command.alias.map((alias) => {
+                client.logStatus(alias + " (" + command.name + ")", "Message", ELogStatus.LOADING);
+                client.mcommands.set(alias, command);
+                client.logStatus(alias + " (" + command.name + ")", "Message", ELogStatus.SUCCESS);
+              });
+            }
           }
         });
       }));
