@@ -11,7 +11,7 @@
  *
  * March 12, 2023
  */
-import { Bot } from "@server/bot";
+import { Bot } from "@core/bot";
 
 /**
  * Handler function
