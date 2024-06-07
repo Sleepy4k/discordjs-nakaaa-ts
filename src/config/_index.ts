@@ -13,7 +13,6 @@
  */
 import web from "./web.config";
 import bot from "./bot.config";
-import nsfw from "./nsfw.config";
 import emoji from "./emoji.config";
 import slash from "./slash.config";
 import filter from "./filter.config";
@@ -26,7 +25,6 @@ import anti_crash from "./anti_crash.config";
 const config = {
   bot,
   web,
-  nsfw,
   emoji,
   slash,
   filter,

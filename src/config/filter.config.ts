@@ -13,24 +13,24 @@
  */
 const filter = {
   music: [ // This config is constant, you can't change it unless you know what you're doing
-    "Bassboost",
-    "Chorus",
-    "Compressor",
-    "Dim",
-    "Expander",
-    "Fadein",
-    "Karaoke",
-    "Lofi",
-    "Mono",
-    "Nightcore",
-    "Normalizer",
-    "Phaser",
-    "Pulsator",
-    "Softlimiter",
-    "Vaporwave",
-    "8D",
-    "Clear",
-    "List"
+    "bassboost",
+    "chorus",
+    "compressor",
+    "dim",
+    "expander",
+    "fadein",
+    "karaoke",
+    "lofi",
+    "mono",
+    "nightcore",
+    "normalizer",
+    "phaser",
+    "pulsator",
+    "softlimiter",
+    "vaporwave",
+    "8d",
+    "clear",
+    "list"
   ]
 }
 
