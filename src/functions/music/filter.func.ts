@@ -12,6 +12,7 @@
  * March 12, 2023
 */
 import { ICommandParam } from "@interfaces";
+import CatchError from "@classes/CatchError";
 import { QueueFilters } from "discord-player";
 import { ChatInputCommandInteraction } from "discord.js";
 
@@ -38,6 +39,32 @@ const main = async (data: ICommandParam) => {
     footer: client.getFooter(interaction),
   }, ephemeral);
 
+  if (!filter || filter == undefined) return await client.sendEmbed(interaction, {
+    color: "Red",
+    title: "Error",
+    description: "```Please provide a filter name!```",
+    footer: client.getFooter(interaction),
+  }, ephemeral);
+
+  if (filter.toLowerCase() == "list") {
+    let totalFilter = 0;
+
+    const filterList = ValidFilter.forEach(data => {
+      if (data == "list") return;
+
+      totalFilter++;
+
+      return totalFilter + ". " + data + "\n";
+    });
+
+    return await client.sendEmbed(interaction, {
+      color: "Blue",
+      title: "Filter List",
+      description: `\`\`\`${filterList}\`\`\``,
+      footer: client.getFooter(interaction),
+    }, ephemeral);
+  }
+
   if ('voice' in member) {
     if (!member.voice.channelId) return await client.sendEmbed(interaction, {
       color: "Red",
@@ -56,35 +83,19 @@ const main = async (data: ICommandParam) => {
       footer: client.getFooter(interaction)
     }, ephemeral);
 
-    if (!filter || filter == undefined) return await client.sendEmbed(interaction, {
-      color: "Red",
-      title: "Error",
-      description: "```Please provide a filter name!```",
-      footer: client.getFooter(interaction),
-    }, ephemeral);
-
-    if (!ValidFilter.includes(filter)) return await client.sendEmbed(interaction, {
+    if (!ValidFilter.includes(filter.toLowerCase())) return await client.sendEmbed(interaction, {
       color: "Red",
       title: "Error",
       description: `\`\`\`Please provide a valid filter name! Use ${prefix}filter list to see all available filters.\`\`\``,
       footer: client.getFooter(interaction),
     }, ephemeral);
 
-    if (filter == "list") {
-      const filterList = ValidFilter.map((filter) => {
-        if (filter != "List") `\`${filter}\``;
-      }).join(", ");
-
-      return await client.sendEmbed(interaction, {
-        color: "Blue",
-        title: "Filter List",
-        description: `\`\`\`${filterList}\`\`\``,
-        footer: client.getFooter(interaction),
-      }, ephemeral);
-    }
-
-    if (filter == "clear") {
-      queue.filters.ffmpeg.setFilters(false);
+    if (filter.toLowerCase() == "clear") {
+      try {
+        queue.filters.ffmpeg.setFilters(false);
+      } catch(error: unknown) {
+        CatchError.print(error);
+      }
 
       return await client.sendEmbed(interaction, {
         color: "Green",
@@ -94,7 +105,28 @@ const main = async (data: ICommandParam) => {
       }, ephemeral);
     }
 
-    queue.filters.ffmpeg.toggle(filter as keyof QueueFilters);
+    // If the filter is already enabled, then do nothing
+    if (queue.filters.ffmpeg.isEnabled(filter as keyof QueueFilters)) {
+      return await client.sendEmbed(interaction, {
+        color: "Red",
+        title: "Error",
+        description: `The filter \`${filter}\` is already enabled!`,
+        footer: client.getFooter(interaction),
+      }, ephemeral);
+    }
+
+    try {
+      // If other filters are enabled, then disable them
+      // This is because ffmpeg filters are applied to the whole stream
+      // So we can't have multiple filters enabled at the same time
+      if (queue.filters.ffmpeg.getFiltersEnabled().length > 0) {
+        queue.filters.ffmpeg.setFilters(false);
+      }
+
+      queue.filters.ffmpeg.toggle(filter as keyof QueueFilters);
+    } catch(error: unknown) {
+      CatchError.print(error);
+    }
 
     return await client.sendEmbed(interaction, {
       color: "Green",
