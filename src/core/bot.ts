@@ -80,7 +80,7 @@ export class Bot extends Client {
       AIChat: null,
       isAIAuthenticated: false,
       isPuppeteerInitialized: false,
-      characterAI: new CharacterAI(),
+      characterAI: null,
     };
 
     this.player = new Player(this, {
@@ -305,11 +305,21 @@ export class Bot extends Client {
    */
   async initChatbot(): Promise<void> {
     const { characterAI, isAIAuthenticated } = this.chatbot;
+
+    if (isAIAuthenticated) return;
+
     const charConfig = config.chatbot;
 
-    if (isAIAuthenticated || !charConfig.charId) return;
+    if (charConfig.charId === "" || charConfig.token === "") {
+      print("Chatbot disabled due empty config for char id and char token", EPrintType.INFO);
+      return;
+    }
+
+    if (!characterAI) this.chatbot.characterAI = new CharacterAI();
 
     try {
+      if (!characterAI) return;
+
       if (charConfig.token) await characterAI.authenticateWithToken(charConfig.token);
       else await characterAI.authenticateAsGuest();
 
