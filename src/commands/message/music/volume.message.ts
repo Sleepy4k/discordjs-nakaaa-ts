@@ -24,6 +24,12 @@ export default new Command({
   name: "volume",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["volume-music", "vol", "vol-music"],
+
+  /**
    * Event description
    * @type {string}
    */

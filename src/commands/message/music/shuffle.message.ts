@@ -24,6 +24,12 @@ export default new Command({
   name: "shuffle",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["shuffle-queue", "shuffle-music-queue", "shuffle-music"],
+
+  /**
    * Event description
    * @type {string}
    */

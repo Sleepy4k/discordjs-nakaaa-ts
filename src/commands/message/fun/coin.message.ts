@@ -27,7 +27,7 @@ export default new Command({
    * Event name alias
    * @type {string | string[]}
    */
-  alias: ["flip", "flip-coin", "flipcoin"],
+  alias: ["flip", "flip-coin", "flipcoin", "uang-koin", "koin"],
 
   /**
    * Event description

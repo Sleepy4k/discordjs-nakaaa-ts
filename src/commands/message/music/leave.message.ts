@@ -24,6 +24,12 @@ export default new Command({
   name: "leave",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["leave-vc", "leave-voice", "leave-voice-channel", "leave-vc-channel", "leave-voice-ch", "leave-vc-ch", "leave-voice-channel"],
+
+  /**
    * Event description
    * @type {string}
    */

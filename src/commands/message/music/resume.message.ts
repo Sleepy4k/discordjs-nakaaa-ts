@@ -24,6 +24,12 @@ export default new Command({
   name: "resume",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["resume-song", "rs"],
+
+  /**
    * Event description
    * @type {string}
    */

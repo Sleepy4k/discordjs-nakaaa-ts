@@ -27,7 +27,7 @@ export default new Command({
    * Event name alias
    * @type {string | string[]}
    */
-  alias: "up",
+  alias: ["up", "up-time", "up-time-bot", "uptime-bot", "bot-uptime", "botuptime", "uptimebot"],
 
   /**
    * Event description

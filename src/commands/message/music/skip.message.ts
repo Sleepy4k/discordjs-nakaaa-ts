@@ -24,6 +24,12 @@ export default new Command({
   name: "skip",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["skip-song", "next", "next-song"],
+
+  /**
    * Event description
    * @type {string}
    */

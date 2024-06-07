@@ -24,6 +24,12 @@ export default new Command({
   name: "loop",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["loop-queue", "loop-queue-music", "loop-music-queue", "loop-music"],
+
+  /**
    * Event description
    * @type {string}
    */

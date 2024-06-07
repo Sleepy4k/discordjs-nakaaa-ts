@@ -24,6 +24,12 @@ export default new Command({
   name: "filter",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["set-filter", "setfilter", "music-filter", "musicfilter"],
+
+  /**
    * Event description
    * @type {string}
    */

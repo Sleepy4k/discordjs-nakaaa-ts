@@ -27,7 +27,7 @@ export default new Command({
    * Event name alias
    * @type {string | string[]}
    */
-  alias: ["purge", "delete", "bulk-delete", "bulkdelete", "cls"],
+  alias: ["purge", "delete", "bulk-delete", "bulkdelete", "cls", "bersihkan", "hapus", "hapus-pesan"],
 
   /**
    * Event description

@@ -27,7 +27,7 @@ export default new Command({
    * Event name alias
    * @type {string | string[]}
    */
-  alias: ["cat-image", "cat-img"],
+  alias: ["cat-image", "cat-img", "kucing"],
 
   /**
    * Event description

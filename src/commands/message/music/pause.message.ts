@@ -24,6 +24,12 @@ export default new Command({
   name: "pause",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["pause-song", "ps"],
+
+  /**
    * Event description
    * @type {string}
    */

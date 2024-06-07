@@ -24,6 +24,12 @@ export default new Command({
   name: "stop",
 
   /**
+   * Event name alias
+   * @type {string | string[]}
+   */
+  alias: ["stop-music", "end", "end-music"],
+
+  /**
    * Event description
    * @type {string}
    */
