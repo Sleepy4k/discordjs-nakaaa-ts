@@ -32,7 +32,7 @@ interface IChatBot {
   /**
    * @type {CharacterAI}
    */
-  characterAI: CharacterAI;
+  characterAI: CharacterAI | null;
 }
 
 export default IChatBot;
