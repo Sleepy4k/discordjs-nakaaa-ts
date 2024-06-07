@@ -5,7 +5,8 @@
 Perintah Error
 
 ~~~bash
-  Kalo liat error "The application did not respond" itu karena ada kendala pada server yang beberapa kemungkinan nya karena jaringan server kurang stabil atau kode yang error
+  Kalo liat error "The application did not respond" itu karena ada kendala pada server,
+  yang beberapa kemungkinan nya karena jaringan server kurang stabil atau kode yang error
 ~~~
 
 Instalasi Error
@@ -17,7 +18,9 @@ Instalasi Error
 Tidak digunakan lagi
 
 ~~~bash
-  folder NSFW sekarang sudah tidak digunakan lagi, jika kalian ingin menggunakan fitur tersebut, silahkan perbarui ke system yang terbaru, atau kalian bisa memperbarui dengan mengubah pada kedua sisi bukan di folder fungsi.
+  folder NSFW sekarang sudah tidak digunakan lagi dan sudah di hapus pada project ini,
+  jika kalian ingin menggunakan fitur tersebut, silahkan perbarui ke system yang terbaru,
+  atau kalian bisa menambahkan nya dari project lama dan mengubah nya dari vanilla ke typescript.
 ~~~
 
 Error ketika membuka web
@@ -31,7 +34,8 @@ Error ketika membuka web
 Command Error
 
 ~~~bash
-  If you see the error "The application did not respond" it is because there is a problem with the server, some of which could be because the server network is unstable or the code has an error.
+  If you see the error "The application did not respond" it is because there is a problem with the server,
+  some of which could be because the server network is unstable or the code has an error.
 ~~~
 
 Installation Error
@@ -43,7 +47,9 @@ Installation Error
 Desprecated
 
 ~~~bash
-  NSFW folder is now desprecated, if you want to update it with new system please update it with yourself, or just edit it at both side not in function folder.
+  NSFW folder is now desprecated and removed from this project,
+  if you want to use it with new system please update it with yourself,
+  or just add it from old project and convert it from vanilla to typescript.
 ~~~
 
 Error while opening web
