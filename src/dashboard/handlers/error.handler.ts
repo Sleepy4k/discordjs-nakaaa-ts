@@ -19,8 +19,6 @@ import type { ErrorRequestHandler } from "express";
  * @type {ErrorRequestHandler}
  */
 const errorHandler: ErrorRequestHandler = (err, req, res) => {
-  console.log("hai");
-  
   /**
    * Set locals, only providing error in development
    */
