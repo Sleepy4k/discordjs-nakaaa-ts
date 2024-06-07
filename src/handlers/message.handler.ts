@@ -26,10 +26,9 @@ export default new Handler({
       const commandDirs = await readdir("./src/commands/message");
 
       await Promise.all(commandDirs.map(async (commandDir) => {
-        if (client.config.nsfw.enable && commandDir === client.config.nsfw.directory) return;
-
+        const extension = __filename.split(".").pop();
         const commands = await readdir(`./src/commands/message/${commandDir}`);
-        const filteredCommands = commands.filter((file) => file.endsWith(".ts"));
+        const filteredCommands = commands.filter((file) => file.endsWith(`.${extension}`));
 
         filteredCommands.map(async (filteredCommand) => {
           const fileName = filteredCommand.split(".");

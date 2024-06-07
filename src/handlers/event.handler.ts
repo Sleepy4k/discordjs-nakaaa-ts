@@ -24,7 +24,8 @@ export default new Handler({
   run: async (client: Bot): Promise<void> => {
     try {
       const events = await readdir("./src/events");
-      const filteredEvents = events.filter((file) => file.endsWith(".ts"));
+      const extension = __filename.split(".").pop();
+      const filteredEvents = events.filter((file) => file.endsWith(`.${extension}`));
 
       await Promise.all(filteredEvents.map(async (filteredEvent) => {
         const fileName = filteredEvent.split(".");

@@ -30,10 +30,9 @@ export default new Handler({
       const slashDirs = await readdir("./src/commands/slash");
 
       await Promise.all(slashDirs.map(async (slashDir) => {
-        if (client.config.nsfw.enable && slashDir === client.config.nsfw.directory) return;
-
+        const extension = __filename.split(".").pop();
         const slashs = await readdir(`./src/commands/slash/${slashDir}`);
-        const filteredSlashs = slashs.filter((file) => file.endsWith(".ts"));
+        const filteredSlashs = slashs.filter((file) => file.endsWith(`.${extension}`));
 
         filteredSlashs.map(async (filteredSlash) => {
           const fileName = filteredSlash.split(".");
