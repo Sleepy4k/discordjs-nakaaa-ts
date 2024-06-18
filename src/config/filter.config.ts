@@ -16,7 +16,6 @@ const filter = {
     "bassboost",
     "chorus",
     "compressor",
-    "dim",
     "expander",
     "fadein",
     "karaoke",
@@ -28,7 +27,6 @@ const filter = {
     "pulsator",
     "softlimiter",
     "vaporwave",
-    "8d",
     "clear",
     "list"
   ]
