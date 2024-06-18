@@ -87,7 +87,7 @@ export class Bot extends Client {
       ytdlOptions: {
         filter: "audioonly",
         quality: "highestaudio",
-        highWaterMark: 1 << 27,
+        highWaterMark: 1 << 25,
       },
     });
   }
