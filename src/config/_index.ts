@@ -16,6 +16,7 @@ import bot from "./bot.config";
 import emoji from "./emoji.config";
 import slash from "./slash.config";
 import filter from "./filter.config";
+import genius from "./genius.config";
 import chatbot from "./chatbot.config";
 import handler from "./handler.config";
 import activity from "./activity.config";
@@ -28,6 +29,7 @@ const config = {
   emoji,
   slash,
   filter,
+  genius,
   chatbot,
   handler,
   activity,
