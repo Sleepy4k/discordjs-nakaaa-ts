@@ -1,29 +1,21 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import { Bot } from "@core/bot";
-import { ELogStatus } from "@enums";
-import { Handler } from "@templates";
-import { IEventFile } from "@interfaces";
+import ELogStatus from "@enums/ELogStatus.js";
+import CatchError from "@classes/CatchError.js";
+import Bot from "@modules/bot.js";
+import Handler from "@templates/handler.js";
 import { readdir } from "node:fs/promises";
-import CatchError from "@classes/CatchError";
+import type { IEventFile } from "@interfaces/eventFile.js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.resolve(fileURLToPath(import.meta.url) + "/../../");
+const __filename = path.basename(fileURLToPath(import.meta.url));
 
 export default new Handler({
   name: "event",
 
   run: async (client: Bot): Promise<void> => {
     try {
-      const events = await readdir("./src/events");
+      const events = await readdir(`${__dirname}/events`);
       const extension = __filename.split(".").pop();
       const filteredEvents = events.filter((file) => file.endsWith(`.${extension}`));
 

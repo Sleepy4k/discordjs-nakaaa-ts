@@ -1,28 +1,20 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import { IEventFile } from "@interfaces";
-import type { TEventFunc } from "@types";
+import { Events } from "discord.js";
+import type {
+  TEventFunc,
+  IEventFile
+} from "@interfaces/eventFile.js";
 
 class Event {
   /**
    * Event name
-   * @type {string}
+   *
+   * @type {string|Events}
    */
-  name: string
+  name: string|Events
 
   /**
    * Event function
+   *
    * @type {TEventFunc}
    */
   run: TEventFunc
@@ -30,7 +22,7 @@ class Event {
   /**
    * Init Event
    *
-   * @param {IEventFile}
+   * @param {IEventFile} params
    */
   constructor(params: IEventFile) {
     this.name = params.name;

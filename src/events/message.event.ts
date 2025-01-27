@@ -1,21 +1,8 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import { Bot } from "@core/bot";
-import { Event } from "@templates";
-import { EPrintType } from "@enums";
-import { print, regExp } from "@utils";
-import CatchError from "@classes/CatchError";
+import print from "@utils/print.js";
+import Bot from "@modules/bot.js";
+import Event from "@templates/event.js";
+import EPrintType from "@enums/EPrintType.js";
+import CatchError from "@classes/CatchError.js";
 import { Events, Message, PermissionsBitField } from "discord.js";
 
 export default new Event({
@@ -23,9 +10,14 @@ export default new Event({
 
   run: async (client: Bot, message: Message) => {
     if (!client.user) return;
-    if (message.author.bot || !message.member || !message.guild || !message.id) return;
+    if (
+      message.author.bot ||
+      !message.member ||
+      !message.guild ||
+      !message.id
+    ) return;
 
-    const mentionPrefix = new RegExp(`^(<@!?${client.user.id}>|${regExp(client.prefix)})\\s*`);
+    const mentionPrefix = new RegExp(`^(<@!?${client.user.id}>|${client.prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})\\s*`);
     if (!mentionPrefix.test(message.content)) return;
 
     const [, matchedPrefix] = message.content.match(mentionPrefix) || [];
@@ -33,79 +25,104 @@ export default new Event({
     const command = args.shift()?.toLowerCase() || "";
 
     if (command?.length === 0 && matchedPrefix.includes(client.user.id)) {
-      print(`${message.author.tag} (${message.author.id}) mention bot in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
+      print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) used mention prefix in ${message.guild.name} (${message.guild.id})`);
 
       return await client.sendEmbed(message, {
-        description: "Kamu kenapa? kok mention aku? kangen ya? :smiling_face_with_tear:"
+        color: "Purple",
+        title: "Alooo, I'm here!",
+        footer: client.getFooter(message),
+        description: `My prefix in this server is \`${client.prefix}\`. Feel free to use it!`,
       });
     }
 
-    const messageCommand = client.mcommands.get(command) || client.mcommands.find((commands) => commands.aliases && commands.aliases.includes(command));
-
-    if (command?.length > 0 && !messageCommand && matchedPrefix.includes(client.user.id) && client.config.chatbot.token !== "") {
-      if (!client.chatbot.isPuppeteerInitialized || !client.chatbot.isAIAuthenticated) return await client.sendEmbed(message, {
-        title: "Chatbot not ready",
-        description: `Hey ${message.author}, chatbot not ready!`,
-        footer: client.getFooter(message)
-      });
-
-      const reply = await client.sendEmbed(message, {
-        description: "Please wait...",
-        footer: client.getFooter(message, "basic")
-      });
-
-      const response = await client.chatbot.AIChat.sendAndAwaitResponse(command, true);
-      print(`${message.author.tag} (${message.author.id}) send message to chatbot '${command}' with response '${response.text}' in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
-
-      await reply.delete();
+    const isCommandExists = client.messageCommands.has(command) || client.messageCommands.find((cmd) => cmd.aliases.includes(command));
+    if (!isCommandExists) {
+      print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use an unknown command in ${message.guild.name} (${message.guild.id})`);
 
       return await client.sendEmbed(message, {
-        description: response.text,
-        footer: client.getFooter(message, "basic")
+        color: "Red",
+        title: "Whooopsie!",
+        footer: client.getFooter(message),
+        description: "I don't know that command. Please try again.",
       });
     }
 
-    if (!messageCommand) return client.sendEmbed(message, {
-      title: "Command not found",
-      description: `Hey ${message.author}, command \`${command}\` not found!`,
-      footer: client.getFooter(message)
-    });
-
-    const botPerms = messageCommand.botPermissions;
-    const userPerms = messageCommand.userPermissions;
-    const messageBotPerms = message.guild.members.me;
     const messageUserPerms = message.member.permissions;
-    const resolveBotPerms = PermissionsBitField.resolve(botPerms);
-    const resolveUserPerms = PermissionsBitField.resolve(userPerms);
+    if (typeof messageUserPerms === "string" || !(messageUserPerms instanceof PermissionsBitField)) {
+      print(EPrintType.ERROR, "PermissionsBitField is not supported in this version of discord.js");
 
-    if (typeof messageUserPerms === "string") return await client.sendEmbed(message, {
-      title: "Permission Denied",
-      description: `Bot can't resolve your permissions!`,
-      footer: client.getFooter(message)
-    });
+      return await client.sendEmbed(message, {
+        color: "Red",
+        title: "Whooopsie!",
+        footer: client.getFooter(message),
+        description: "I can't check your permissions. Please try again.",
+      });
+    }
 
-    if (userPerms && !messageUserPerms.has(resolveUserPerms)) return await client.sendEmbed(message, {
-      title: "Permission Denied",
-      description: `You don't have permission to use this command!`,
-      footer: client.getFooter(message)
-    });
-    else if (botPerms && !messageBotPerms?.permissions.has(resolveBotPerms)) return await client.sendEmbed(message, {
-      title: "Permission Denied",
-      description: `I don't have permission to use this command!`,
-      footer: client.getFooter(message)
-    });
-    else if (client.cooldown(message, messageCommand) !== false) return await client.sendEmbed(message, {
-      title: "Cooldown",
-      description: `Hey ${message.author}, please wait **${client.cooldown(message, messageCommand)}** seconds before using this command again!`,
-      footer: client.getFooter(message)
-    });
-    else {
-      try {
-        print(`${message.author.tag} (${message.author.id}) ran command ${messageCommand.name} in ${message.guild.name} (${message.guild.id})`, EPrintType.INFO);
-        return await messageCommand.run(client, message, args, client.prefix);
-      } catch (error: unknown) {
-        CatchError.print(error);
-      }
+    const messageCommand = client.messageCommands.get(command) || client.messageCommands.find((cmd) => cmd.aliases.includes(command));
+    const { botPermissions, userPermissions } = messageCommand;
+    const resolvedBotPermissions = PermissionsBitField.resolve(botPermissions);
+    const resolvedUserPermissions = PermissionsBitField.resolve(userPermissions);
+
+    if (userPermissions && messageUserPerms.has(resolvedUserPermissions)) {
+      print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use a command without permission in ${message.guild.name} (${message.guild.id})`);
+
+      return await client.sendEmbed(message, {
+        color: "Red",
+        title: "Whooopsie!",
+        footer: client.getFooter(message),
+        description: "You don't have permission to use this command.",
+      });
+    }
+
+    const messageBotPerms = message.guild.members.me?.permissions;
+    if (typeof messageBotPerms === "string" || !(messageBotPerms instanceof PermissionsBitField)) {
+      print(EPrintType.ERROR, "PermissionsBitField is not supported in this version of discord.js");
+
+      return await client.sendEmbed(message, {
+        color: "Red",
+        title: "Whooopsie!",
+        footer: client.getFooter(message),
+        description: "I can't check my permissions. Please try again.",
+      });
+    }
+
+    if (botPermissions && messageBotPerms.has(resolvedBotPermissions)) {
+      print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use a command without permission in ${message.guild.name} (${message.guild.id})`);
+
+      return await client.sendEmbed(message, {
+        color: "Red",
+        title: "Whooopsie!",
+        footer: client.getFooter(message),
+        description: "I don't have permission to use this command.",
+      });
+    }
+
+    const messageCooldown = client.cooldown(message, messageCommand);
+    if (messageCooldown && (typeof messageCooldown === 'number' && messageCooldown > 0)) {
+      print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use a command on cooldown in ${message.guild.name} (${message.guild.id})`);
+
+      return await client.sendEmbed(message, {
+        color: "Red",
+        title: "Whooopsie!",
+        footer: client.getFooter(message),
+        description: `Please wait ${messageCooldown} seconds before using this command again.`,
+      });
+    }
+
+    try {
+      print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) used ${messageCommand.name} command in ${message.guild.name} (${message.guild.id})`);
+
+      return await messageCommand.run(client, message, args, client.prefix);
+    } catch (error: unknown) {
+      CatchError.print(error);
+
+      return await client.sendEmbed(message, {
+        color: "Red",
+        title: "Caught an error :(",
+        footer: client.getFooter(message),
+        description: "Something went wrong. Please try again.",
+      });
     }
   }
-});
+})
