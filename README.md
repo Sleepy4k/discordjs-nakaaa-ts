@@ -1,129 +1,94 @@
-# Discord.js Nakaaa
+# Discordjs Nakaaa Typescript
 
-## ID
+This is my own discord bot created using discord-js framework and typescript, many features added to
+make this bot more interactive and usefull for daily use on discord platform.
 
-### Pengertian
+## Overview
 
-~~~bash
-  Sebuah bot discord yang di buat menggunakan framework discord js dari javascript untuk handle interaksi user di discord
-~~~
+### Discord Bot
 
-### Kebutuhan System
+- User can play, skip, and pause their music
+- User can have fun with mini games such as coin flip, meme, and much more
+- User can check their ping, make announcement, and create a polling
 
-- Node JS >= 16.13.x
-- Node GYP
-- Python >= 3.6.0
-- Visual Studio >= 2022
+### Website
 
-### Instalasi
+- User can see discord bot serve information
+- User can use our api to get detail and spesific information
 
-Pastikan kalian sudah menginstall node js dengan versi >= 18 ke atas
+## Tech Stack
 
-~~~bash
-  npm install
-~~~
+**Frontend:** EJS
 
-Copy file .env.example menjadi .env, dan isi data seperti token etc
+**Backend:** Express.JS and Discord.JS
 
-~~~bash
-  copy .env.example .env (windows)
-  cp .env.example .env
-~~~
+**Database:** -
 
-jika sudah, isi detail data pada index.js dalam folder config. dan jalankan bot
+**Authentication:** -
+
+## Run Locally
+
+Clone the project
 
 ~~~bash
-  npm start
+git clone https://github.com/Sleepy4k/discordjs-nakaaa-ts.git
 ~~~
 
-### Titik Akhir
+Go to the project directory
 
 ~~~bash
-  - localhost:3000
-  - localhost:3000/api
-  - localhost:3000/api/ping
-  - localhost:3000/api/users
-  - localhost:3000/api/uptime
-  - localhost:3000/api/guilds
-  - localhost:3000/api/channels
-  - localhost:3000/api/command
-  - localhost:3000/api/command/:name
-  - localhost:3000/api/slash
-  - localhost:3000/api/slash/:name
-  - localhost:3000/api/invite
-  - localhost:3000/api/github
-  - localhost:3000/api/log
-  - localhost:3000/api/log/:type
-  - localhost:3000/api/log/:type/:date
+cd discordjs-nakaaa-ts
 ~~~
 
-### Catatan
+Copy .env.example into .env
 
 ~~~bash
-  Project ini dibuat dengan typescript dan discord js v14.
-  Untuk catatan lebih lanjut kalian bisa baca note.md
+cp .env.example .env
 ~~~
 
-## EN
-
-### Understanding
+Install node dependencies
 
 ~~~bash
-  A discord bot created using the discord js framework from javascript to handle user interaction on discord
+npm install
 ~~~
 
-### Dependencies
-
-- Node JS >= 16.13.x
-- Node GYP
-- Python >= 3.6.0
-- Visual Studio >= 2022
-
-### Instalation
-
-Make sure you have installed node js with version >= 18 and above
+Or, if you are in production mode run this command
+(don't forget to built it first)
 
 ~~~bash
-  npm install
+npm install --production
 ~~~
 
-Copy the .env.example file to .env, and fill in data such as tokens etc
+Start the server
 
 ~~~bash
-  copy .env.example .env (windows)
-  cp .env.example .env
+npm run dev
 ~~~
 
-if so, fill in the data details in index.js in the config folder. and run bots
+## Environment Variables
 
-~~~bash
-  npm start
-~~~
+To run this project, you will need to add the following environment variables to your .env file
 
-### Endpoint
+`BOT_NAME`
+`BOT_ICON`
+`BOT_TOKEN`
+`BOT_AUTHOR`
+`BOT_PREFIX`
+`BOT_BROWSER`
 
-~~~bash
-  - localhost:3000
-  - localhost:3000/api
-  - localhost:3000/api/ping
-  - localhost:3000/api/users
-  - localhost:3000/api/uptime
-  - localhost:3000/api/guilds
-  - localhost:3000/api/channels
-  - localhost:3000/api/command
-  - localhost:3000/api/command/:name
-  - localhost:3000/api/slash
-  - localhost:3000/api/slash/:name
-  - localhost:3000/api/invite
-  - localhost:3000/api/github
-  - localhost:3000/api/log
-  - localhost:3000/api/log/:type
-  - localhost:3000/api/log/:type/:date
-~~~
+`WEB_HOSTNAME`
+`WEB_PORT`
+`WEB_ENV`
+`WEB_NAME`
 
-### Note
+`ACTIVITY_TYPE`
+`ACTIVITY_NAME`
 
-~~~bash
-  This project was made with typescript and discord js v14.
-  For further note you can read note.md
-~~~
+`ANTI_CRASH_URL`
+
+`WELCOME_CHANNEL`
+`GOODBYE_CHANNEL`
+
+## Feedback
+
+If you have any feedback, please make an issue with detail description, proof of concept, and node dependencies list
