@@ -27,9 +27,10 @@ yarn-error.*
 *.tsbuildinfo
 
 # lock files
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# Disabled because we build source for application not library
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
 
 # Logs file
 logs/
