@@ -1,6 +1,14 @@
-import Bot from "@modules/bot.js";
+import TBotClient from "./botClient.js";
 
-type TEventFunc = (client: Bot, ...args: any[]) => Promise<void>;
+/**
+ * Event function
+ *
+ * @param {TBotClient} client
+ * @param {any[]} args
+ *
+ * @returns {void}
+ */
+type TEventFunc = (client: TBotClient, ...args: any[]) => Promise<void>;
 
 interface IEventFile {
   /**
