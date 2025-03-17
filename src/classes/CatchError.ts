@@ -2,14 +2,22 @@ import EPrintType from "@enums/EPrintType.js";
 import print from "@utils/print.js";
 
 class CatchError {
-  constructor() {
-    throw new Error("This class cannot be instantiated.");
+  private constructor() {
+    // Prevent instantiation
   }
 
-  public static print(error: any): void {
-    if (error instanceof Error) print(EPrintType.ERROR, error.message);
-    else if (typeof error === "string") print(EPrintType.ERROR, error);
-    else print(EPrintType.ERROR, "Unknown error");
+  /**
+   * Print error message
+   * @param {unknown} error
+   * @returns {void}
+   * @example
+   * ```
+   * CatchError.print(new Error("Something went wrong"));
+   * ```
+   */
+  public static print(error: unknown): void {
+    const errorMessage = error instanceof Error ? error.message : typeof error === "string" ? error : "Unknown error";
+    print(EPrintType.ERROR, errorMessage);
   }
 }
 
