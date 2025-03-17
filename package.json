@@ -36,12 +36,15 @@
   "homepage": "https://github.com/sleepy4k/discordjs-nakaaa-ts#readme",
   "dependencies": {
     "@discordjs/opus": "^0.10.0",
+    "cpu-stat": "^2.0.1",
     "discord-music-player": "^9.1.1",
     "discord.js": "^14.17.3",
     "discordjs-nakaaa-ts": "file:",
     "dotenv": "^16.4.7",
     "ffmpeg-static": "^5.2.0",
     "isomorphic-unfetch": "^4.0.2",
+    "moment": "^2.30.1",
+    "os": "^0.1.2",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
