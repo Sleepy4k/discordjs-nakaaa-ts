@@ -1,7 +1,7 @@
 import type {
   THandlerFunc,
   IHandlerParams
-} from "@interfaces/handlerTemplate.js";
+} from "@interfaces/handlerFile.js";
 
 class Handler {
   /**
