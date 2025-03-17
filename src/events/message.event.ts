@@ -1,14 +1,14 @@
 import print from "@utils/print.js";
-import Bot from "@modules/bot.js";
-import Event from "@templates/event.js";
+import Event from "@templates/Event.js";
 import EPrintType from "@enums/EPrintType.js";
 import CatchError from "@classes/CatchError.js";
 import { Events, Message, PermissionsBitField } from "discord.js";
+import TBotClient from "@interfaces/botClient.js";
 
 export default new Event({
   name: Events.MessageCreate,
 
-  run: async (client: Bot, message: Message) => {
+  run: async (client: TBotClient, message: Message) => {
     if (!client.user) return;
     if (
       message.author.bot ||
@@ -64,7 +64,7 @@ export default new Event({
     const resolvedBotPermissions = PermissionsBitField.resolve(botPermissions);
     const resolvedUserPermissions = PermissionsBitField.resolve(userPermissions);
 
-    if (userPermissions && messageUserPerms.has(resolvedUserPermissions)) {
+    if (userPermissions && !messageUserPerms.has(resolvedUserPermissions)) {
       print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use a command without permission in ${message.guild.name} (${message.guild.id})`);
 
       return await client.sendEmbed(message, {
@@ -87,7 +87,7 @@ export default new Event({
       });
     }
 
-    if (botPermissions && messageBotPerms.has(resolvedBotPermissions)) {
+    if (botPermissions && !messageBotPerms.has(resolvedBotPermissions)) {
       print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use a command without permission in ${message.guild.name} (${message.guild.id})`);
 
       return await client.sendEmbed(message, {

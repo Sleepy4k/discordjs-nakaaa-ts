@@ -1,11 +1,11 @@
-import Bot from "@modules/bot.js";
-import Event from "@templates/event.js";
+import TBotClient from "@interfaces/botClient.js";
+import Event from "@templates/Event.js";
 import { EmbedBuilder, Events, WebhookClient } from "discord.js";
 
 export default new Event({
   name: Events.Error,
 
-  run: async (client: Bot, error: Error) => {
+  run: async (client: TBotClient, error: Error) => {
     const { enable, webhook } = client.config.crash_report;
     if (!enable) return;
 
@@ -23,6 +23,5 @@ export default new Event({
     await webhookClient.send({
       embeds: [embed],
     });
-    return;
   }
 });
