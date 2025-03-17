@@ -1,8 +1,7 @@
 const HandlerConfig = {
   list: [
-    "slash",
     "event",
-    "message"
+    "command",
   ]
 };
 
