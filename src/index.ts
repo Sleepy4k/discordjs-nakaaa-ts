@@ -1,5 +1,6 @@
 import Bot from '@modules/bot.js';
 
-const client: Bot = await Bot.createInstace();
-await client.build();
-client.start();
+Bot.createInstace().then(async (client) => {
+  await client.build();
+  await client.start();
+});
