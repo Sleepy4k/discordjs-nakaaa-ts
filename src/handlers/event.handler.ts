@@ -19,25 +19,33 @@ export default new Handler({
       const extension = path.extname(__filename);
       const filteredEvents = events.filter((file) => file.endsWith(extension));
 
-      await Promise.all(filteredEvents.map(async (filteredEvent) => {
-        const [fileName] = filteredEvent.split(".");
-        client.logStatus(fileName, "Event", ELogStatus.LOADING);
-        try {
-          const event: IEventFile = (await import(`../events/${filteredEvent}`)).default;
+      await Promise.all(
+        filteredEvents.map(async (filteredEvent) => {
+          const [fileName] = filteredEvent.split(".");
+          client.logStatus(fileName, "Event", ELogStatus.LOADING);
+          try {
+            const event: IEventFile = (
+              await import(`../events/${filteredEvent}`)
+            ).default;
 
-          if (!event.name) {
+            if (!event.name) {
+              client.logStatus(fileName, "Event", ELogStatus.ERROR);
+            } else {
+              client.events.set(event.name, event);
+              client.on(event.name, (...args) => event.run(client, ...args));
+              client.logStatus(
+                `${fileName} (${event.name})`,
+                "Event",
+                ELogStatus.SUCCESS
+              );
+            }
+          } catch {
             client.logStatus(fileName, "Event", ELogStatus.ERROR);
-          } else {
-            client.events.set(event.name, event);
-            client.on(event.name, (...args) => event.run(client, ...args));
-            client.logStatus(`${fileName} (${event.name})`, "Event", ELogStatus.SUCCESS);
           }
-        } catch {
-          client.logStatus(fileName, "Event", ELogStatus.ERROR);
-        }
-      }));
+        })
+      );
     } catch (error) {
       CatchError.print(error);
     }
-  }
+  },
 });
