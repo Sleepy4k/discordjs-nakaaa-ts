@@ -23,5 +23,5 @@ export default new Event({
     await webhookClient.send({
       embeds: [embed],
     });
-  }
+  },
 });

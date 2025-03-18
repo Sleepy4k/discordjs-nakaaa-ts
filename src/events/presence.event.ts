@@ -11,7 +11,10 @@ export default new Event({
   run: async (client: TBotClient) => {
     if (!client.user) return;
 
-    print(EPrintType.INFO, `${client.user.tag}: Ready to serve ${client.users.cache.size} users, in ${client.channels.cache.size} channels of ${client.guilds.cache.size} guilds.`);
+    print(
+      EPrintType.INFO,
+      `${client.user.tag}: Ready to serve ${client.users.cache.size} users, in ${client.channels.cache.size} channels of ${client.guilds.cache.size} guilds.`
+    );
 
     try {
       client.user.setPresence({
@@ -20,12 +23,12 @@ export default new Event({
         activities: [
           {
             name: client.config.activity.name,
-            type: ActivityType.Watching
-          }
-        ]
+            type: ActivityType.Watching,
+          },
+        ],
       });
     } catch (error: unknown) {
       CatchError.print(error);
     }
-  }
-})
+  },
+});

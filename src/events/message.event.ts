@@ -60,8 +60,7 @@ export default new Event({
     }
 
     const messageCommand = client.messageCommands.get(command) || client.messageCommands.find((cmd) => cmd.aliases.includes(command));
-    const { botPermissions, userPermissions } = messageCommand;
-    const resolvedBotPermissions = PermissionsBitField.resolve(botPermissions);
+    const { userPermissions } = messageCommand;
     const resolvedUserPermissions = PermissionsBitField.resolve(userPermissions);
 
     if (userPermissions && !messageUserPerms.has(resolvedUserPermissions)) {
@@ -86,6 +85,9 @@ export default new Event({
         description: "I can't check my permissions. Please try again.",
       });
     }
+
+    const { botPermissions } = messageCommand;
+    const resolvedBotPermissions = PermissionsBitField.resolve(botPermissions);
 
     if (botPermissions && !messageBotPerms.has(resolvedBotPermissions)) {
       print(EPrintType.INFO, `${message.author.tag} (${message.author.id}) tried to use a command without permission in ${message.guild.name} (${message.guild.id})`);
