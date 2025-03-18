@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 class FileStream {
   private constructor() {
-    throw new Error("This class cannot be instantiated.");
+    // Prevent instantiation
   }
 
   /**
@@ -31,6 +31,8 @@ class FileStream {
     if (this.isExists(file)) return;
 
     const dir = file.includes(".") ? file.split("/").slice(0, -1).join("/") : file;
+    if (!dir || dir === "") return;
+
     fs.mkdirSync(dir, { recursive: true });
   }
 
