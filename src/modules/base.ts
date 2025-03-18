@@ -25,6 +25,17 @@ class Base extends Client {
   #prefix: string;
   #listOfHandlers: string[] = [];
 
+  /**
+   * Create a new instance of the bot
+   * @param handlerList string[]
+   * @param config typeof BotClientConfig
+   * @param playerConfig typeof PlayerOptionsConfig
+   * @returns Base
+   * @example
+   * ```
+   * const bot = new Base(handlerList, config, playerConfig);
+   * ```
+   */
   protected constructor(
     handlerList: string[],
     config: typeof BotClientConfig,
@@ -42,38 +53,119 @@ class Base extends Client {
     this.#listOfHandlers = handlerList;
   }
 
+  /**
+   * Create a getter method for player
+   * @returns Player
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const player = bot.player;
+   * ```
+   */
   get player(): Player {
     return this.#player;
   }
 
+  /**
+   * Create a getter method for events
+   * @returns Collection<string, any>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const events = bot.events;
+   * ```
+   */
   get events(): Collection<string, any> {
     return this.#events;
   }
 
+  /**
+   * Create a getter method for cooldowns
+   * @returns Collection<string, any>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const cooldowns = bot.cooldowns;
+   * ```
+   */
   get cooldowns(): Collection<string, any> {
     return this.#cooldowns;
   }
 
+  /**
+   * Create a getter method for slashCommands
+   * @returns Collection<string, any>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const slashCommands = bot.slashCommands;
+   * ```
+   */
   get slashCommands(): Collection<string, any> {
     return this.#slashCommands;
   }
 
+  /**
+   * Create a getter method for messageCommands
+   * @returns Collection<string, any>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const messageCommands = bot.messageCommands;
+   * ```
+   */
   get messageCommands(): Collection<string, any> {
     return this.#messageCommands;
   }
 
+  /**
+   * Create a getter method for config
+   * @returns typeof BotClientConfig
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const config = bot.config;
+   * ```
+   */
   get config(): typeof BotClientConfig {
     return this.#config;
   }
 
+  /**
+   * Create a getter method for prefix
+   * @returns string
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const prefix = bot.prefix;
+   * ```
+   */
   get prefix(): string {
     return this.#prefix;
   }
 
+  /**
+   * Create a getter method for listOfHandlers
+   * @returns string[]
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const handlers = bot.handlerList;
+   * ```
+   */
   get handlerList(): string[] {
     return [...this.#listOfHandlers];
   }
 
+  /**
+   * Build all the handlers
+   * @returns Promise<void>
+   * @example
+   * ```
+   * const bot = new Bot.createInstace();
+   * await bot.buildHandlers();
+   * ```
+   */
   protected async buildHandlers(): Promise<void> {
     try {
       this.#listOfHandlers.forEach(async (file) => {
@@ -95,6 +187,15 @@ class Base extends Client {
     }
   }
 
+  /**
+   * Login into the client as a bot
+   * @returns Promise<void>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * await bot.clientLogin();
+   * ```
+   */
   protected async clientLogin(): Promise<void> {
     await this.login(this.#config.bot.token)
       .then(() => {
@@ -113,6 +214,16 @@ class Base extends Client {
       });
   }
 
+  /**
+   * Get the list of handlers
+   * @returns Promise<string[]>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * const handlers = await bot.getHandlerList();
+   * console.log(handlers);
+   * ```
+   */
   protected static async getHandlerList(): Promise<string[]> {
     this.#isHandlerDirectoryExists(HANDLER_PATH);
 
@@ -130,6 +241,16 @@ class Base extends Client {
     return handlerList;
   }
 
+  /**
+   * Check if the handler directory exists
+   * @param path string
+   * @returns boolean
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * bot.#isHandlerDirectoryExists(HANDLER_PATH);
+   * ```
+   */
   static #isHandlerDirectoryExists(path: string): boolean {
     if (!path || path === "") return false;
 
@@ -146,6 +267,16 @@ class Base extends Client {
     }
   }
 
+  /**
+   * Check if the handler exists
+   * @param fileName string
+   * @returns Promise<boolean>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * await bot.#isHandlerExists("ping.handler");
+   * ```
+   */
   static async #isHandlerExists(fileName: string): Promise<boolean> {
     if (!fileName || fileName === "") return false;
 
@@ -164,6 +295,18 @@ class Base extends Client {
     }
   }
 
+  /**
+   * Log the status of the bot
+   * @param name string
+   * @param category string
+   * @param type ELogStatus
+   * @returns void
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * bot.logStatus("ping", "Command", ELogStatus.SUCCESS);
+   * ```
+   */
   public logStatus(name: string, category: string, type: ELogStatus): void {
     let icon, text;
 

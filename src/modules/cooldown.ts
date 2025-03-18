@@ -2,6 +2,18 @@ import { Collection, CommandInteraction, Message } from "discord.js";
 import { ICommandFile } from "@interfaces/commandFile.js";
 
 class Cooldown {
+  /**
+   * Handle cooldown for command
+   * @param interaction CommandInteraction | Message<boolean>
+   * @param command ICommandFile
+   * @param cooldowns Collection<string, any>
+   * @returns boolean | number
+   * @example
+   * ```
+   * const cooldown = new Cooldown();
+   * cooldown.handleCooldown(interaction, command, cooldowns);
+   * ```
+   */
   public static handleCooldown(
     interaction: CommandInteraction | Message<boolean>,
     command: ICommandFile,

@@ -11,6 +11,21 @@ import CatchError from "@classes/CatchError.js";
 import BotClientConfig from "@config/bot-client.js";
 
 class Embed {
+  /**
+   * Send a message for standalone message or reply for interaction
+   * @param interaction CommandInteraction | Message<boolean>
+   * @param data IEmbedData
+   * @returns Message | InteractionResponse<boolean>
+   * @example
+   * ```
+   * const embed = new Embed);
+   * await embed.send(interaction, {
+   *  embeds: [new EmbedBuilder().setTitle("Hello, world!")],
+   *  ephemeral: false,
+   *  fetchReply: false,
+   * });
+   * ```
+   */
   public static async send(
     interaction: CommandInteraction | Message<boolean>,
     data: IEmbedData
@@ -46,6 +61,44 @@ class Embed {
     }
   }
 
+  /**
+   * Send an embed message
+   * @param interaction CommandInteraction | Message<boolean>
+   * @param data IEmbedBuilder
+   * @param ephemeral boolean
+   * @param fetchReply boolean
+   * @returns Message | InteractionResponse<boolean>
+   * @example
+   * ```
+   * const embed = new Embed();
+   * await embed.sendEmbed(interaction, {
+   *  title: "Hello, world!",
+   *  description: "This is a test message",
+   *  color: "RANDOM",
+   *  footer: {
+   *    text: "Bot by author",
+   *    iconURL: "https://example.com/icon.png",
+   *  },
+   *  thumbnail: "https://example.com/thumbnail.png",
+   *  author: {
+   *    name: "Author",
+   *    iconURL: "https://example.com/author.png",
+   *  },
+   *  fields: [
+   *    {
+   *      name: "Field 1",
+   *      value: "Value 1",
+   *      inline: true,
+   *    },
+   *    {
+   *      name: "Field 2",
+   *      value: "Value 2",
+   *      inline: true,
+   *    },
+   *  ],
+   * }, false, false);
+   * ```
+   */
   public static async sendEmbed(
     interaction: CommandInteraction | Message<boolean>,
     data: IEmbedBuilder,
@@ -82,13 +135,23 @@ class Embed {
     }
   }
 
+  /**
+   * Get the footer for the embed message
+   * @param client CommandInteraction | Message<boolean>
+   * @param config typeof BotClientConfig
+   * @returns EmbedFooterOptions
+   * @example
+   * ```
+   * const embed = new Embed();
+   * embed.getFooter(interaction, BotClientConfig);
+   * ```
+   */
   public static getFooter(
     client: CommandInteraction | Message<boolean>,
-    config: typeof BotClientConfig,
-    type?: string
+    config: typeof BotClientConfig
   ): EmbedFooterOptions {
     try {
-      if (!client || type)
+      if (!client)
         return {
           text: `${config.bot.name} | Bot by ${config.bot.author}`,
           iconURL: config.bot.icon,
