@@ -22,16 +22,10 @@ const crash_report = {
   }
 };
 
-const slash = {
-  global: process.env.SLASH_GLOBAL || true,
-  guild: process.env.SLASH_GUILD || ""
-};
-
 const BotClientConfig = {
   bot,
   activity,
-  crash_report,
-  slash
+  crash_report
 };
 
 export default BotClientConfig;
