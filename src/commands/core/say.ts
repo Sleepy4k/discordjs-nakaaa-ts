@@ -44,35 +44,52 @@ export default new Command({
    * Event options
    * @type {Array<object>}
    */
-  options: [{
-    name: "text",
-    description: "Text to say.",
-    type: ESlashOpt.STRING,
-    required: true
-  }],
+  options: [
+    {
+      name: "text",
+      description: "Text to say.",
+      type: ESlashOpt.STRING,
+      required: true,
+    },
+  ],
 
   /**
    * Event function
    * @type {TCommandFunc}
    */
-  run: async (client: TBotClient, interaction: Message | ChatInputCommandInteraction, args: any[], prefix: string) => {
+  run: async (
+    client: TBotClient,
+    interaction: Message | ChatInputCommandInteraction,
+    args: any[],
+    prefix: string
+  ) => {
     const ephemeral = interaction instanceof ChatInputCommandInteraction;
-    const say = ephemeral ? interaction.options.getString("text", true) : args?.join(" ")?.toLowerCase();
+    const say = ephemeral
+      ? interaction.options.getString("text", true)
+      : args?.join(" ")?.toLowerCase();
 
     if (!say) {
-      await client.sendEmbed(interaction, {
-        color: "Red",
-        title: "Say",
-        description: `\`\`\`Usage: ${prefix}say <text>\`\`\``,
-        footer: client.getFooter(interaction),
-      }, ephemeral);
+      await client.sendEmbed(
+        interaction,
+        {
+          color: "Red",
+          title: "Say",
+          description: `\`\`\`Usage: ${prefix}say <text>\`\`\``,
+          footer: client.getFooter(interaction),
+        },
+        ephemeral
+      );
       return;
     }
 
-    await client.sendEmbed(interaction, {
-      color: "Navy",
-      description: `\`\`\`${say}\`\`\``,
-      footer: client.getFooter(interaction, "basic"),
-    }, false);
-  }
+    await client.sendEmbed(
+      interaction,
+      {
+        color: "Navy",
+        description: `\`\`\`${say}\`\`\``,
+        footer: client.getFooter(interaction, true),
+      },
+      false
+    );
+  },
 });
