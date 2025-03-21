@@ -1,19 +1,5 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import { ICommandFile } from "@interfaces";
-import type { TCommandFunc } from "@types";
-import { ApplicationCommandType } from "discord.js";
+import { ICommandFile, TCommandFunc } from "@interfaces/commandFile.js";
+import { ApplicationCommandType, PermissionFlagsBits } from "discord.js";
 
 class Command {
   /**
@@ -23,10 +9,16 @@ class Command {
   name: string
 
   /**
+   * If enable slash command
+   * @type {boolean}
+   */
+  enableSlash?: boolean
+
+  /**
    * Event name alias
    * @type {string | string[]}
    */
-  alias?: string | string[]
+  aliases?: string | string[]
 
   /**
    * Event description
@@ -38,13 +30,13 @@ class Command {
    * Event user permissions
    * @type {bigint}
    */
-  userPermissions: bigint
+  userPermissions?: bigint
 
   /**
    * Event bot permissions
    * @type {bigint}
    */
-  botPermissions: bigint
+  botPermissions?: bigint
 
   /**
    * Event category
@@ -83,14 +75,15 @@ class Command {
    */
   constructor(params: ICommandFile) {
     this.name = params.name;
-    this.alias = params.alias;
+    this.enableSlash = params.enableSlash || false;
+    this.aliases = params.aliases;
     this.description = params.description;
-    this.userPermissions = params.userPermissions;
-    this.botPermissions = params.botPermissions;
+    this.userPermissions = params.userPermissions || PermissionFlagsBits.SendMessages;
+    this.botPermissions = params.botPermissions || PermissionFlagsBits.SendMessages;
     this.category = params.category;
     this.cooldown = params.cooldown || 0;
-    this.type = params.type;
-    this.options = params.options;
+    this.type = params.type || ApplicationCommandType.ChatInput;
+    this.options = params.options || [];
     this.run = params.run;
   }
 }

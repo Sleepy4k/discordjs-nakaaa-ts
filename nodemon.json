@@ -3,13 +3,14 @@
   "stdin": false,
   "verbose": true,
   "exitcrash": false,
-  "exec": "npm run start",
-  "watch": ["./*"],
-  "ext": "ts,ejs",
-  "ignore" : [
-    "dist/*",
-    ".git/*",
-    ".vscode/*",
-    "node_modules/*"
+  "exec": "concurrently \"npx tsc --watch -p tsconfig.json\" \"npx tsx -r tsconfig-paths/register ./src/index.ts\"",
+  "ext": ".ts",
+  "watch": [
+    "src",
+    ".env"
+  ],
+  "ignore": [
+    "src/logs/*",
+    "src/**/*.spec.ts"
   ]
 }

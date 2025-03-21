@@ -1,38 +1,23 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import { print } from "@utils";
-import { EPrintType } from "@enums";
+import EPrintType from "@enums/EPrintType.js";
+import print from "@utils/print.js";
 
 class CatchError {
-  /**
-   * Constructor
-   */
-  constructor() {
-    throw new Error("This class is not meant to be instantiated");
+  private constructor() {
+    // Prevent instantiation
   }
 
   /**
-   * Print error
-   *
+   * Print error message
    * @param {unknown} error
-   *
    * @returns {void}
+   * @example
+   * ```
+   * CatchError.print(new Error("Something went wrong"));
+   * ```
    */
   public static print(error: unknown): void {
-    if (error instanceof Error) print(error.message, EPrintType.ERROR);
-    else if (typeof error === "string") print(error, EPrintType.ERROR);
-    else print("Unknown error", EPrintType.ERROR);
+    const errorMessage = error instanceof Error ? error.message : typeof error === "string" ? error : "Unknown error";
+    print(EPrintType.ERROR, errorMessage);
   }
 }
 

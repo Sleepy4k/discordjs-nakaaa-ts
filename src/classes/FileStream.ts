@@ -1,70 +1,80 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import fs from "fs";
+import fs from "node:fs";
 
 class FileStream {
-  /**
-   * Constructor
-   */
-  constructor() {
-    throw new Error("This class cannot be instantiated");
+  private constructor() {
+    // Prevent instantiation
   }
 
   /**
-   * Create log file
-   * 
+   * Check if file exists
    * @param {string} file
-   *
+   * @returns {boolean}
+   * @example
+   * ```
+   * FileStream.isExists("file.txt");
+   * ```
+   */
+  public static isExists(file: string): boolean {
+    return fs.existsSync(file);
+  }
+
+  /**
+   * Create file
+   * @param {string} file
    * @returns {void}
+   * @example
+   * ```
+   * FileStream.create("file.txt");
+   * ```
    */
   public static create(file: string): void {
-    if (!fs.existsSync(file)) fs.mkdirSync(file);
+    if (this.isExists(file)) return;
+
+    const dir = file.includes(".") ? file.split("/").slice(0, -1).join("/") : file;
+    if (!dir || dir === "") return;
+
+    fs.mkdirSync(dir, { recursive: true });
   }
 
   /**
-   * Write log to file
-   *
+   * Write data to file
    * @param {string} data
    * @param {string} file
-   *
    * @returns {void}
+   * @example
+   * ```
+   * FileStream.write("Hello, world!", "file.txt");
+   * ```
    */
   public static write(data: string, file: string): void {
-    fs.appendFileSync(file, data + "\n");
+    if (!this.isExists(file)) this.create(file);
+    fs.appendFileSync(file, `${data}\n`);
   }
 
   /**
-   * Read log from file
-   * 
+   * Read file
    * @param {string} file
-   *
    * @returns {string}
+   * @example
+   * ```
+   * FileStream.read("file.txt");
+   * ```
    */
   public static read(file: string): string {
-    if (!fs.existsSync(file)) return "";
-    return fs.readFileSync(file, "utf-8");
+    return this.isExists(file) ? fs.readFileSync(file, "utf-8") : "";
   }
 
   /**
-   * Delete log file
-   * 
+   * Remove file
    * @param {string} file
-   *
    * @returns {void}
+   * @example
+   * ```
+   * FileStream.remove("file.txt");
+   * ```
    */
-  public static delete(file: string): void {
-    if (fs.existsSync(file)) fs.unlinkSync(file);
+  public static remove(file: string): void {
+    if (this.isExists(file)) fs.unlinkSync(file);
   }
 }
 

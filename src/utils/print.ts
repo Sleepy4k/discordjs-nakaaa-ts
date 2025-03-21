@@ -1,62 +1,24 @@
-/**
- * Coding service by Sleepy4k <sarahpalastring@gmail.com>
- *
- * Reselling this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- * Written by:
- * Apri Pandu Wicaksono
- *
- * Link: https://github.com/sleepy4k
- *
- * March 12, 2023
- */
-import { EPrintType } from "@enums";
-import type { TPrint } from "@types";
-import LogToFile from "@classes/LogToFile";
+import LogToFile from "@classes/LogToFile.js";
+import EPrintType from "@enums/EPrintType.js";
+import { getCurrentDateWithTime } from "./parse.js";
 
 /**
- * Parse current date and time to human readable for console log with message
- *
- * @param {string} message
+ * Print message to console and log to file
  * @param {EPrintType} type
- *
+ * @param {string} message
  * @returns {void}
+ * @example
+ * ```
+ * print(EPrintType.INFO, "Hello, world!");
+ * ```
  */
-const print: TPrint = (message: string, type: EPrintType = EPrintType.DEFAULT): void => {
-  let data;
-  const now = new Date();
-  const date = now.toLocaleDateString();
-  const time = now.toLocaleTimeString();
+const print = (type: EPrintType, message: string): void => {
+  const currDate = getCurrentDateWithTime();
+  const typeString = EPrintType[type] || EPrintType.DEFAULT;
+  const data = `[${currDate}] [${typeString}] ${message}`;
 
-  switch (type) {
-    case EPrintType.ERROR:
-      data = `[${date} ${time}] [ERROR] ${message}`;
-      LogToFile.write(data, EPrintType.ERROR);
-      break;
-    case EPrintType.WARN:
-      data = `[${date} ${time}] [WARN] ${message}`;
-      LogToFile.write(data, EPrintType.WARN);
-      break;
-    case EPrintType.DEBUG:
-      data = `[${date} ${time}] [DEBUG] ${message}`;
-      LogToFile.write(data, EPrintType.DEBUG);
-      break;
-    case EPrintType.INFO:
-      data = `[${date} ${time}] [INFO] ${message}`;
-      LogToFile.write(data, EPrintType.INFO);
-      break;
-    case EPrintType.WEB:
-      data = `[${date} ${time}] [WEB] ${message}`;
-      LogToFile.write(data, EPrintType.WEB);
-      break;
-    default:
-      data = `[${date} ${time}] ${message}`;
-      LogToFile.write(data, EPrintType.DEFAULT);
-      break;
-  }
-
+  LogToFile.write(type, data);
   console.log(data);
-}
+};
 
 export default print;
