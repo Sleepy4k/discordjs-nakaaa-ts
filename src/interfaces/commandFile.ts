@@ -55,7 +55,7 @@ interface ICommandFile {
    * If enable slash command
    * @type {boolean}
    */
-  enableSlash?: boolean
+  enableSlash?: boolean;
 
   /**
    * @type {string | string[]}
