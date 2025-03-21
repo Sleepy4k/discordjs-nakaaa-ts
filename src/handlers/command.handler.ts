@@ -12,8 +12,18 @@ const __dirname = path.resolve(fileURLToPath(import.meta.url) + "/../../");
 const __filename = path.basename(fileURLToPath(import.meta.url));
 
 export default new Handler({
+  /**
+   * Handler name
+   *
+   * @type {string}
+   */
   name: "command",
 
+  /**
+   * Handler function
+   *
+   * @type {THandlerFunc}
+   */
   run: async (client: TBotClient): Promise<void> => {
     let filteredSlashCommands: any = [];
 
