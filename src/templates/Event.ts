@@ -1,8 +1,6 @@
 import { Events } from "discord.js";
-import type {
-  TEventFunc,
-  IEventFile
-} from "@interfaces/eventFile.js";
+import type { TEventFunc, IEventFile, TPlayerFunc } from "@interfaces/eventFile.js";
+import EEventType from "@enums/EEventType.js";
 
 class Event {
   /**
@@ -10,14 +8,21 @@ class Event {
    *
    * @type {string|Events}
    */
-  name: string|Events
+  name: string | Events;
+
+  /**
+   * Event type
+   *
+   * @type {EEventType|typeof EEventType}
+   */
+  type?: EEventType | typeof EEventType;
 
   /**
    * Event function
    *
-   * @type {TEventFunc}
+   * @type {TEventFunc|TPlayerFunc}
    */
-  run: TEventFunc
+  run: TEventFunc | TPlayerFunc;
 
   /**
    * Init Event
@@ -26,6 +31,7 @@ class Event {
    */
   constructor(params: IEventFile) {
     this.name = params.name;
+    this.type = params.type || EEventType.CLIENT;
     this.run = params.run;
   }
 }
