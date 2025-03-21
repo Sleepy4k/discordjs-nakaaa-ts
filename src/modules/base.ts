@@ -1,8 +1,7 @@
 import fs from "node:fs";
 import ClientConfig from "@config/discord-client.js";
-import { Player } from "discord-music-player";
+import { Player } from "discord-player";
 import BotClientConfig from "@config/bot-client.js";
-import PlayerOptionsConfig from "@config/player-options.js";
 import HandlerConfig from "@config/bot-handler.js";
 import EmojiConfig from "@config/emojis.js";
 import ELogStatus from "@enums/ELogStatus.js";
@@ -12,6 +11,7 @@ import CatchError from "@classes/CatchError.js";
 import HandlerTemplate from "@templates/Handler.js";
 import { Client, Collection } from "discord.js";
 import TBotClient from "@interfaces/botClient.js";
+import { DefaultExtractors } from "@discord-player/extractor";
 
 const HANDLER_PATH = "./../handlers";
 
@@ -29,7 +29,6 @@ class Base extends Client {
    * Create a new instance of the bot
    * @param handlerList string[]
    * @param config typeof BotClientConfig
-   * @param playerConfig typeof PlayerOptionsConfig
    * @returns Base
    * @example
    * ```
@@ -39,11 +38,10 @@ class Base extends Client {
   protected constructor(
     handlerList: string[],
     config: typeof BotClientConfig,
-    playerConfig: typeof PlayerOptionsConfig
   ) {
     super(ClientConfig);
 
-    this.#player = new Player(this as any, playerConfig);
+    this.#player = new Player(this as any);
     this.#events = new Collection();
     this.#cooldowns = new Collection();
     this.#slashCommands = new Collection();
@@ -212,6 +210,19 @@ class Base extends Client {
           ELogStatus.ERROR
         );
       });
+  }
+
+  /**
+   * Load the player extractors
+   * @returns Promise<void>
+   * @example
+   * ```
+   * const bot = await Bot.createInstace();
+   * await bot.loadPlayerExtractors();
+   * ```
+   */
+  protected async loadPlayerExtractors(): Promise<void> {
+    this.#player.extractors.loadMulti(DefaultExtractors);
   }
 
   /**

@@ -53,6 +53,7 @@ class Embed {
         });
     } catch (error: unknown) {
       CatchError.print(error);
+
       return await interaction.reply({
         content: "Something went wrong",
         ephemeral: data.ephemeral,
@@ -127,6 +128,7 @@ class Embed {
       });
     } catch (error: unknown) {
       CatchError.print(error);
+
       return await Embed.send(interaction, {
         content: "Something went wrong",
         ephemeral: ephemeral,
@@ -148,10 +150,11 @@ class Embed {
    */
   public static getFooter(
     client: CommandInteraction | Message<boolean>,
-    config: typeof BotClientConfig
+    config: typeof BotClientConfig,
+    isBasic: boolean = false
   ): EmbedFooterOptions {
     try {
-      if (!client)
+      if (!client || isBasic)
         return {
           text: `${config.bot.name} | Bot by ${config.bot.author}`,
           iconURL: config.bot.icon,
@@ -175,6 +178,7 @@ class Embed {
       };
     } catch (error: unknown) {
       CatchError.print(error);
+
       return {
         text: `${config.bot.name} | Bot by ${config.bot.author}`,
         iconURL: config.bot.icon,

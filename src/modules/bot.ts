@@ -1,5 +1,4 @@
 import BotClientConfig from "@config/bot-client.js";
-import PlayerOptionsConfig from "@config/player-options.js";
 import {
   CommandInteraction,
   Message,
@@ -19,7 +18,7 @@ class Bot extends Base {
    * @returns Bot
    */
   private constructor(handlerList: string[]) {
-    super(handlerList, BotClientConfig, PlayerOptionsConfig);
+    super(handlerList, BotClientConfig);
   }
 
   /**
@@ -45,6 +44,7 @@ class Bot extends Base {
    * ```
    */
   public async build(): Promise<void> {
+    await this.loadPlayerExtractors();
     await this.buildHandlers();
   }
 
@@ -121,9 +121,10 @@ class Bot extends Base {
    * ```
    */
   public getFooter(
-    client: CommandInteraction | Message<boolean>
+    client: CommandInteraction | Message<boolean>,
+    isBasic: boolean = false
   ): EmbedFooterOptions {
-    return Embed.getFooter(client, this.config);
+    return Embed.getFooter(client, this.config, isBasic);
   }
 
   /**
