@@ -11,16 +11,11 @@ make this bot more interactive and usefull for daily use on discord platform.
 - User can have fun with mini games such as coin flip, meme, and much more
 - User can check their ping, make announcement, and create a polling
 
-### Website
-
-- User can see discord bot serve information
-- User can use our api to get detail and spesific information
-
 ## Tech Stack
 
-**Frontend:** EJS
+**Frontend:** -
 
-**Backend:** Express.JS and Discord.JS
+**Backend:** Discord.JS
 
 **Database:** -
 
@@ -76,18 +71,11 @@ To run this project, you will need to add the following environment variables to
 `BOT_PREFIX`
 `BOT_BROWSER`
 
-`WEB_HOSTNAME`
-`WEB_PORT`
-`WEB_ENV`
-`WEB_NAME`
-
 `ACTIVITY_TYPE`
 `ACTIVITY_NAME`
 
-`ANTI_CRASH_URL`
-
-`WELCOME_CHANNEL`
-`GOODBYE_CHANNEL`
+`CRASH_REPORT_WEBHOOK`
+`CRASH_REPORT_ENABLE`
 
 ## Feedback
 
