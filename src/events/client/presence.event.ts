@@ -6,8 +6,18 @@ import Event from "@templates/Event.js";
 import TBotClient from "@interfaces/botClient.js";
 
 export default new Event({
+  /**
+   * Event name
+   *
+   * @type {string|Events}
+   */
   name: Events.ClientReady,
 
+  /**
+   * Event function
+   *
+   * @type {TEventFunc|TPlayerFunc}
+   */
   run: async (client: TBotClient) => {
     if (!client.user) return;
 

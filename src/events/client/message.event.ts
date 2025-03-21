@@ -6,8 +6,18 @@ import { Events, Message, PermissionsBitField } from "discord.js";
 import TBotClient from "@interfaces/botClient.js";
 
 export default new Event({
+  /**
+   * Event name
+   *
+   * @type {string|Events}
+   */
   name: Events.MessageCreate,
 
+  /**
+   * Event function
+   *
+   * @type {TEventFunc|TPlayerFunc}
+   */
   run: async (client: TBotClient, message: Message) => {
     if (!client.user) return;
     if (

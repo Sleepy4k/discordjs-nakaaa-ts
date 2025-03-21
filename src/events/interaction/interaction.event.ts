@@ -11,8 +11,18 @@ import EPrintType from "@enums/EPrintType.js";
 import CatchError from "@classes/CatchError.js";
 
 export default new Event({
+  /**
+   * Event name
+   *
+   * @type {string|Events}
+   */
   name: Events.InteractionCreate,
 
+  /**
+   * Event function
+   *
+   * @type {TEventFunc|TPlayerFunc}
+   */
   run: async (client: TBotClient, interaction: Interaction) => {
     if (!interaction.member || interaction.user.bot || !interaction.guild)
       return;

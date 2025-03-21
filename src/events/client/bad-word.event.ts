@@ -6,8 +6,18 @@ import { Events, Message } from "discord.js";
 import EPrintType from "@enums/EPrintType.js";
 
 export default new Event({
+  /**
+   * Event name
+   *
+   * @type {string|Events}
+   */
   name: Events.MessageCreate,
 
+  /**
+   * Event function
+   *
+   * @type {TEventFunc|TPlayerFunc}
+   */
   run: async (client: TBotClient, message: Message) => {
     if (message.author.bot || !message.guild || !message.id) return;
 

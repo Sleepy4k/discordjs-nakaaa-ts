@@ -3,8 +3,18 @@ import Event from "@templates/Event.js";
 import { EmbedBuilder, Events, WebhookClient } from "discord.js";
 
 export default new Event({
+  /**
+   * Event name
+   *
+   * @type {string|Events}
+   */
   name: Events.Error,
 
+  /**
+   * Event function
+   *
+   * @type {TEventFunc|TPlayerFunc}
+   */
   run: async (client: TBotClient, error: Error) => {
     const { enable, webhook } = client.config.crash_report;
     if (!enable) return;
