@@ -169,12 +169,11 @@ export default new Command({
           description: "```Searching for the song...```",
           footer: client.getFooter(interaction),
         },
-        ephemeral,
-        true
+        ephemeral
       );
 
       const result = await player.search(song).finally(async () => {
-        await searchMessage.delete();
+        if (!ephemeral) await searchMessage.delete();
       });
       if (!result || !result.hasTracks()) {
         await client.sendEmbed(

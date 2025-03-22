@@ -130,22 +130,30 @@ export default new Command({
     try {
       const queue = useQueue(guild.id);
       if (!queue || !queue.isPlaying()) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```There is no song that I could skip!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```There is no song that I could skip!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 
       if (queue.isEmpty() && queue.repeatMode !== QueueRepeatMode.AUTOPLAY) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```There is no song that I could skip!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```There is no song that I could skip!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 

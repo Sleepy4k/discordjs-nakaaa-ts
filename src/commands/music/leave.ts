@@ -130,12 +130,16 @@ export default new Command({
     try {
       const queue = useQueue(guild.id);
       if (!queue) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```Queue not found!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```Queue not found!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 

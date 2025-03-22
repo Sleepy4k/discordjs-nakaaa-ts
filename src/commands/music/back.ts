@@ -131,30 +131,42 @@ export default new Command({
       const history = useHistory();
 
       if (history?.isEmpty()) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "We can't see any history",
-          description: "```There is no previous song to go back!```",
-          footer: client.getFooter(interaction)
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "We can't see any history",
+            description: "```There is no previous song to go back!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
       }
 
-      const searchMessage = await client.sendEmbed(interaction, {
-        color: "Yellow",
-        title: "Searching...",
-        description: "```Searching for the previous song...```",
-        footer: client.getFooter(interaction),
-      });
+      const searchMessage = await client.sendEmbed(
+        interaction,
+        {
+          color: "Yellow",
+          title: "Searching...",
+          description: "```Searching for the previous song...```",
+          footer: client.getFooter(interaction),
+        },
+        ephemeral
+      );
 
       await history?.previous();
 
       searchMessage.delete();
-      await client.sendEmbed(interaction, {
-        color: "Green",
-        title: "Success",
-        description: "```Went back to previous song```",
-        footer: client.getFooter(interaction),
-      })
+      await client.sendEmbed(
+        interaction,
+        {
+          color: "Green",
+          title: "Success",
+          description: "```Went back to previous song```",
+          footer: client.getFooter(interaction),
+        },
+        ephemeral
+      );
     } catch (error) {
       CatchError.print(error);
     }

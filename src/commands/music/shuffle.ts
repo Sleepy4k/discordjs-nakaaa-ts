@@ -130,33 +130,45 @@ export default new Command({
     try {
       const queue = useQueue(guild.id);
       if (!queue || !queue.isPlaying()) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```There is nothing playing!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```There is nothing playing!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 
       if (queue.tracks.size < 3) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```There are not enough songs in the queue!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```There are not enough songs in the queue!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 
       const mode = queue.toggleShuffle();
 
-      await client.sendEmbed(interaction, {
-        color: "Green",
-        title: "Success",
-        description: `Shuffle mode is now ${mode ? "enabled" : "disabled"}.`,
-        footer: client.getFooter(interaction),
-      });
+      await client.sendEmbed(
+        interaction,
+        {
+          color: "Green",
+          title: "Success",
+          description: `Shuffle mode is now ${mode ? "enabled" : "disabled"}.`,
+          footer: client.getFooter(interaction),
+        },
+        ephemeral
+      );
     } catch (error) {
       CatchError.print(error);
     }

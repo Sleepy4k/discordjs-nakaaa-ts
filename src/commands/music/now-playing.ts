@@ -130,49 +130,61 @@ export default new Command({
     try {
       const queue = useQueue(guild.id);
       if (!queue || !queue.isPlaying()) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```There is no music playing right now!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```There is no music playing right now!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 
       const track = queue.currentTrack;
       if (!track) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```There is no music playing right now!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```There is no music playing right now!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 
-      await client.sendEmbed(interaction, {
-        color: "Blue",
-        title: "Now Playing",
-        description: `**[${track.title}](${track.url})**`,
-        fields: [
-          {
-            name: "Author",
-            value: track.author,
-            inline: true,
-          },
-          {
-            name: "Duration",
-            value: track.duration,
-            inline: true,
-          },
-          {
-            name: "Requested by",
-            value: track?.requestedBy?.toString() || "",
-            inline: true,
-          },
-        ],
-        footer: client.getFooter(interaction),
-      });
+      await client.sendEmbed(
+        interaction,
+        {
+          color: "Blue",
+          title: "Now Playing",
+          description: `**[${track.title}](${track.url})**`,
+          fields: [
+            {
+              name: "Author",
+              value: track.author,
+              inline: true,
+            },
+            {
+              name: "Duration",
+              value: track.duration,
+              inline: true,
+            },
+            {
+              name: "Requested by",
+              value: track?.requestedBy?.toString() || "",
+              inline: true,
+            },
+          ],
+          footer: client.getFooter(interaction),
+        },
+        ephemeral
+      );
     } catch (error) {
       CatchError.print(error);
     }

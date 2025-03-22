@@ -129,21 +129,29 @@ export default new Command({
 
     if (guild.members.me?.voice.channel) {
       if (guild.members.me.voice.channelId === member.voice.channelId) {
-        await client.sendEmbed(interaction, {
-          color: "Red",
-          title: "Error",
-          description: "```I'm already in your voice channel!```",
-          footer: client.getFooter(interaction),
-        });
+        await client.sendEmbed(
+          interaction,
+          {
+            color: "Red",
+            title: "Error",
+            description: "```I'm already in your voice channel!```",
+            footer: client.getFooter(interaction),
+          },
+          ephemeral
+        );
         return;
       }
 
-      await client.sendEmbed(interaction, {
-        color: "Red",
-        title: "Error",
-        description: "```I'm already in a voice channel!```",
-        footer: client.getFooter(interaction),
-      });
+      await client.sendEmbed(
+        interaction,
+        {
+          color: "Red",
+          title: "Error",
+          description: "```I'm already in a voice channel!```",
+          footer: client.getFooter(interaction),
+        },
+        ephemeral
+      );
       return;
     }
 
