@@ -12,8 +12,14 @@ import HandlerTemplate from "@templates/Handler.js";
 import { Client, Collection } from "discord.js";
 import TBotClient from "@interfaces/botClient.js";
 import { DefaultExtractors } from "@discord-player/extractor";
+import {
+  fileExtension,
+  isProduction,
+  relativeSourcePath,
+} from "@root/helpers.js";
+import path from "node:path";
 
-const HANDLER_PATH = "./../handlers";
+const HANDLER_PATH = path.join(relativeSourcePath, "handlers");
 
 class Base extends Client {
   #player: Player;
@@ -35,10 +41,7 @@ class Base extends Client {
    * const bot = new Base(handlerList, config, playerConfig);
    * ```
    */
-  protected constructor(
-    handlerList: string[],
-    config: typeof BotClientConfig,
-  ) {
+  protected constructor(handlerList: string[], config: typeof BotClientConfig) {
     super(ClientConfig);
 
     this.#player = new Player(this as any);
@@ -167,9 +170,14 @@ class Base extends Client {
   protected async buildHandlers(): Promise<void> {
     try {
       this.#listOfHandlers.forEach(async (file) => {
-        const handler: HandlerTemplate = await import(
-          `${HANDLER_PATH}/${file}.handler`
-        ).then((handler) => handler.default);
+        const filePath = path.join(
+          HANDLER_PATH,
+          `${file}.handler.${fileExtension}`
+        );
+        const relativePath = (isProduction ? "../" : "") + filePath;
+        const handler: HandlerTemplate = await import(relativePath).then(
+          (handler) => handler.default
+        );
         this.logStatus(handler.name, "Handler", ELogStatus.LOADING);
         await handler
           .run(this as unknown as TBotClient)
@@ -236,17 +244,18 @@ class Base extends Client {
    * ```
    */
   protected static async getHandlerList(): Promise<string[]> {
-    this.#isHandlerDirectoryExists(HANDLER_PATH);
+    const isDirExists = this.#isHandlerDirectoryExists(HANDLER_PATH);
+    if (!isDirExists) {
+      print(EPrintType.ERROR, `Handler directory not found at ${HANDLER_PATH}`);
+      return [];
+    }
 
     const { list } = HandlerConfig;
     const handlerList: string[] = [];
 
     for (const handler of list) {
       const isFileExists = await this.#isHandlerExists(handler);
-
-      if (isFileExists) {
-        handlerList.push(handler);
-      }
+      if (isFileExists) handlerList.push(handler);
     }
 
     return handlerList;
@@ -265,13 +274,8 @@ class Base extends Client {
   static #isHandlerDirectoryExists(path: string): boolean {
     if (!path || path === "") return false;
 
-    const isExists = fs.existsSync(path);
-
     try {
-      if (!isExists) {
-        fs.mkdirSync(path, { recursive: true });
-      }
-      return true;
+      return fs.existsSync(path);
     } catch (error) {
       console.error(error);
       return false;
@@ -292,14 +296,15 @@ class Base extends Client {
     if (!fileName || fileName === "") return false;
 
     try {
-      let parsedFileName = fileName.split("/").pop();
+      const parsedFileName = path.parse(fileName).name;
       if (!parsedFileName) return false;
+      const filePath = path.join(
+        HANDLER_PATH,
+        `${parsedFileName}.handler.${fileExtension}`
+      );
+      const relativePath = (isProduction ? "../" : "") + filePath;
 
-      parsedFileName = parsedFileName.replace(/\.[^/.]+$/, "");
-
-      return await import(`${HANDLER_PATH}/${parsedFileName}.handler`)
-        .then(() => true)
-        .catch(() => false);
+      return await import(relativePath).then(() => true).catch(() => false);
     } catch (error) {
       console.error(error);
       return false;
