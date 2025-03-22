@@ -10,7 +10,7 @@ export default new Event({
    *
    * @type {string|Events}
    */
-  name: GuildQueueEvent.PlayerPause,
+  name: GuildQueueEvent.Connection,
 
   /**
    * Event type
@@ -29,9 +29,9 @@ export default new Event({
     if (!interaction) return;
 
     await client.sendEmbed(interaction, {
-      color: "Navy",
-      title: "Music paused",
-      description: `\`\`\`Current track is paused\`\`\``,
+      color: "Fuchsia",
+      title: "Connected to the voice channel",
+      description: `\`\`\`Connected to the voice channel (${queue.channel?.toString()})\`\`\``,
       footer: client.getFooter(interaction),
     });
   },

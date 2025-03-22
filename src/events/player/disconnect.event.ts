@@ -10,7 +10,7 @@ export default new Event({
    *
    * @type {string|Events}
    */
-  name: GuildQueueEvent.PlayerPause,
+  name: GuildQueueEvent.Disconnect,
 
   /**
    * Event type
@@ -29,9 +29,9 @@ export default new Event({
     if (!interaction) return;
 
     await client.sendEmbed(interaction, {
-      color: "Navy",
-      title: "Music paused",
-      description: `\`\`\`Current track is paused\`\`\``,
+      color: "Fuchsia",
+      title: "Disconnected from the voice channel",
+      description: `\`\`\`Disconnected from the voice channel - Please i am so tired\`\`\``,
       footer: client.getFooter(interaction),
     });
   },

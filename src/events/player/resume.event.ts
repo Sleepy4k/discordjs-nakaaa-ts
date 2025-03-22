@@ -24,14 +24,14 @@ export default new Event({
    *
    * @type {TEventFunc|TPlayerFunc}
    */
-  run: async (client: TBotClient, queue: TPlayerQueue, track: Track) => {
+  run: async (client: TBotClient, queue: TPlayerQueue, _track: Track) => {
     const { interaction } = queue.metadata;
     if (!interaction) return;
 
     await client.sendEmbed(interaction, {
       color: "Navy",
       title: "Music resumed",
-      description: `\`\`\`Track resumed - [${track.title}](${track.url})\`\`\``,
+      description: `\`\`\`Current track is resumed\`\`\``,
       footer: client.getFooter(interaction),
     });
   },
