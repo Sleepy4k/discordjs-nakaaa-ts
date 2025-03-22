@@ -52,14 +52,14 @@ export default new Command({
   ) => {
     const ephemeral = interaction instanceof ChatInputCommandInteraction;
     const latency = Date.now() - interaction.createdTimestamp;
-    const apiLatency = Math.round(client.ws.ping);
+    const heartBeat = client.ws.ping.toFixed(0);
 
     await client.sendEmbed(
       interaction,
       {
         color: "Blue",
         title: `${EmojiConfig.pingPong} Pong!`,
-        description: `\`\`\`Latency: ${latency}ms\nAPI Latency: ${apiLatency}ms\`\`\``,
+        description: `\`\`\`Latency: ${latency}ms\nAPI Latency: ${heartBeat}ms\`\`\``,
         footer: client.getFooter(interaction),
       },
       ephemeral
