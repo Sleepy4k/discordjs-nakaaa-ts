@@ -2,14 +2,16 @@ import ELogStatus from "@enums/ELogStatus.js";
 import Handler from "@templates/Handler.js";
 import CatchError from "@classes/CatchError.js";
 import { readdir } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { ICommandFile } from "@interfaces/commandFile.js";
 import TBotClient from "@interfaces/botClient.js";
 import { Events } from "discord.js";
-
-const __dirname = path.resolve(fileURLToPath(import.meta.url) + "/../../");
-const __filename = path.basename(fileURLToPath(import.meta.url));
+import {
+  fileExtension,
+  isProduction,
+  relativeSourcePath,
+  sourcePath,
+} from "@root/helpers.js";
+import path from "node:path";
 
 export default new Handler({
   /**
@@ -31,8 +33,14 @@ export default new Handler({
       const loadMessageFile = async (filePath: string, fileName: string) => {
         client.logStatus(fileName, "Slash", ELogStatus.LOADING);
         client.logStatus(fileName, "Message", ELogStatus.LOADING);
+
         try {
-          const command: ICommandFile = await import(filePath).then(
+          const mergedPath = path.join(
+            filePath,
+            `${fileName}.${fileExtension}`
+          );
+          const relativePath = (isProduction ? "../" : "") + mergedPath;
+          const command: ICommandFile = await import(relativePath).then(
             (module) => module.default
           );
           if (!command.name) {
@@ -77,32 +85,35 @@ export default new Handler({
         }
       };
 
-      const messages = await readdir(`${__dirname}/commands`);
-      const extension = __filename.split(".").pop();
-
+      const messages = await readdir(`${sourcePath}/commands`);
       const filteredMessages = messages.filter((file) =>
-        file.endsWith(`.${extension}`)
+        file.endsWith(`.${fileExtension}`)
       );
       await Promise.all(
         filteredMessages.map((file) => {
           const fileName = file.split(".")[0];
-          return loadMessageFile(`../commands/${file}`, fileName);
+          return loadMessageFile(
+            `${relativeSourcePath}/commands/${file}`,
+            fileName
+          );
         })
       );
 
       const subDirectories = messages.filter(
-        (file) => !file.endsWith(`.${extension}`)
+        (file) => !file.endsWith(`.${fileExtension}`)
       );
       for (const subDirectory of subDirectories) {
-        const subFiles = await readdir(`${__dirname}/commands/${subDirectory}`);
+        const subFiles = await readdir(
+          `${sourcePath}/commands/${subDirectory}`
+        );
         const filteredSubFiles = subFiles.filter((file) =>
-          file.endsWith(`.${extension}`)
+          file.endsWith(`.${fileExtension}`)
         );
         await Promise.all(
           filteredSubFiles.map((file) => {
             const fileName = file.split(".")[0];
             return loadMessageFile(
-              `../commands/${subDirectory}/${file}`,
+              `${relativeSourcePath}/commands/${subDirectory}`,
               fileName
             );
           })

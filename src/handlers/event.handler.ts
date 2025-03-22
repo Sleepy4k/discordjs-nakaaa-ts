@@ -3,14 +3,16 @@ import CatchError from "@classes/CatchError.js";
 import Handler from "@templates/Handler.js";
 import { readdir } from "node:fs/promises";
 import type { IEventFile, TEventFunc } from "@interfaces/eventFile.js";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import TBotClient from "@interfaces/botClient.js";
 import EEventType from "@enums/EEventType.js";
 import { GuildQueueEvent } from "discord-player";
-
-const __dirname = path.resolve(fileURLToPath(import.meta.url) + "/../../");
-const __filename = path.basename(fileURLToPath(import.meta.url));
+import {
+  fileExtension,
+  isProduction,
+  relativeSourcePath,
+  sourcePath,
+} from "@root/helpers.js";
+import path from "node:path";
 
 export default new Handler({
   /**
@@ -29,8 +31,14 @@ export default new Handler({
     try {
       const registerEventFile = async (filePath: string, fileName: string) => {
         client.logStatus(fileName, "Event", ELogStatus.LOADING);
+
         try {
-          const event: IEventFile = await import(filePath).then(
+          const mergedPath = path.join(
+            filePath,
+            `${fileName}.event.${fileExtension}`
+          );
+          const relativePath = (isProduction ? "../" : "") + mergedPath;
+          const event: IEventFile = await import(relativePath).then(
             (module) => module.default
           );
           if (!event.name) {
@@ -67,31 +75,30 @@ export default new Handler({
         }
       };
 
-      const events = await readdir(`${__dirname}/events`);
-      const extension = __filename.split(".").pop();
+      const events = await readdir(`${sourcePath}/events`);
       const filteredEvents = events.filter((file) =>
-        file.endsWith(`.${extension}`)
+        file.endsWith(`.${fileExtension}`)
       );
       await Promise.all(
         filteredEvents.map((file) => {
           const fileName = file.split(".")[0];
-          registerEventFile(`../events/${file}`, fileName);
+          registerEventFile(`${relativeSourcePath}/events/${file}`, fileName);
         })
       );
 
       const subDirectories = events.filter(
-        (file) => !file.endsWith(`.${extension}`)
+        (file) => !file.endsWith(`.${fileExtension}`)
       );
       for (const subDirectory of subDirectories) {
-        const subFiles = await readdir(`${__dirname}/events/${subDirectory}`);
+        const subFiles = await readdir(`${sourcePath}/events/${subDirectory}`);
         const filteredSubFiles = subFiles.filter((file) =>
-          file.endsWith(`.${extension}`)
+          file.endsWith(`.${fileExtension}`)
         );
         await Promise.all(
           filteredSubFiles.map((file) => {
             const fileName = file.split(".")[0];
             return registerEventFile(
-              `../events/${subDirectory}/${file}`,
+              `${relativeSourcePath}/events/${subDirectory}`,
               fileName
             );
           })
