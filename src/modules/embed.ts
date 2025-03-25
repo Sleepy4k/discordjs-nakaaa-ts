@@ -12,6 +12,13 @@ import BotClientConfig from "@config/bot-client.js";
 
 class Embed {
   /**
+   * Create a new instance of Embed
+   */
+  public constructor() {
+    throw new Error(`Class ${this.constructor.name} cannot be instantiated`);
+  }
+
+  /**
    * Send a message for standalone message or reply for interaction
    * @param interaction CommandInteraction | Message<boolean>
    * @param data IEmbedData

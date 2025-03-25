@@ -244,7 +244,7 @@ class Base extends Client {
    * ```
    */
   protected static async getHandlerList(): Promise<string[]> {
-    const isDirExists = this.#isHandlerDirectoryExists(HANDLER_PATH);
+    const isDirExists = this.isHandlerDirectoryExists(HANDLER_PATH);
     if (!isDirExists) {
       print(EPrintType.ERROR, `Handler directory not found at ${HANDLER_PATH}`);
       return [];
@@ -254,7 +254,7 @@ class Base extends Client {
     const handlerList: string[] = [];
 
     for (const handler of list) {
-      const isFileExists = await this.#isHandlerExists(handler);
+      const isFileExists = await this.isHandlerExists(handler);
       if (isFileExists) handlerList.push(handler);
     }
 
@@ -268,10 +268,10 @@ class Base extends Client {
    * @example
    * ```
    * const bot = await Bot.createInstace();
-   * bot.#isHandlerDirectoryExists(HANDLER_PATH);
+   * bot.isHandlerDirectoryExists(HANDLER_PATH);
    * ```
    */
-  static #isHandlerDirectoryExists(path: string): boolean {
+  private static isHandlerDirectoryExists(path: string): boolean {
     if (!path || path === "") return false;
 
     try {
@@ -289,10 +289,10 @@ class Base extends Client {
    * @example
    * ```
    * const bot = await Bot.createInstace();
-   * await bot.#isHandlerExists("ping.handler");
+   * await bot.isHandlerExists("ping.handler");
    * ```
    */
-  static async #isHandlerExists(fileName: string): Promise<boolean> {
+  private static async isHandlerExists(fileName: string): Promise<boolean> {
     if (!fileName || fileName === "") return false;
 
     try {

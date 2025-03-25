@@ -3,6 +3,13 @@ import { ICommandFile } from "@interfaces/commandFile.js";
 
 class Cooldown {
   /**
+   * Create a new instance of Cooldown
+   */
+  public constructor() {
+    throw new Error(`The ${this.constructor.name} class may not be instantiated.`);
+  }
+
+  /**
    * Handle cooldown for command
    * @param interaction CommandInteraction | Message<boolean>
    * @param command ICommandFile
