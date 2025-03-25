@@ -29,7 +29,7 @@ class Event {
    *
    * @param {IEventFile} params
    */
-  constructor(params: IEventFile) {
+  public constructor(params: IEventFile) {
     this.name = params.name;
     this.type = params.type || EEventType.CLIENT;
     this.run = params.run;

@@ -23,7 +23,7 @@ class Handler {
    *
    * @param {IHandlerParams} params
    */
-  constructor(params: IHandlerParams) {
+  public constructor(params: IHandlerParams) {
     this.name = params.name;
     this.run = params.run;
   }

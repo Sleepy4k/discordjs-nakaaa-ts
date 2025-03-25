@@ -73,7 +73,7 @@ class Command {
    *
    * @param {ICommandFile} params
    */
-  constructor(params: ICommandFile) {
+  public constructor(params: ICommandFile) {
     this.name = params.name;
     this.enableSlash = params.enableSlash || false;
     this.aliases = params.aliases;
