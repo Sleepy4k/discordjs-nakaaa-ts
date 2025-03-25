@@ -1,10 +1,8 @@
 import EPrintType from "@enums/EPrintType.js";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import FileStream from "./FileStream.js";
 import { getCurrentDate } from "@utils/parse.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { sourcePath } from "@root/helpers.js";
 
 class LogToFile {
   private constructor() {
@@ -63,17 +61,24 @@ class LogToFile {
    * LogToFile.getPath(EPrintType.INFO, "2022-01-01");
    * ```
    */
-  private static getPath(type: EPrintType, date: string = getCurrentDate()): string {
+  private static getPath(
+    type: EPrintType,
+    date: string = getCurrentDate()
+  ): string {
     const logPaths: Record<EPrintType, string> = {
       [EPrintType.ERROR]: "error",
       [EPrintType.WARN]: "warn",
       [EPrintType.DEBUG]: "debug",
       [EPrintType.INFO]: "info",
       [EPrintType.WEB]: "web",
-      [EPrintType.DEFAULT]: "default"
+      [EPrintType.DEFAULT]: "default",
     };
 
-    const logPath = path.join(__dirname, "../logs", logPaths[type] || logPaths[EPrintType.DEFAULT]);
+    const logPath = path.join(
+      sourcePath,
+      "logs",
+      logPaths[type] || logPaths[EPrintType.DEFAULT]
+    );
     FileStream.create(logPath);
 
     return path.join(logPath, `${date}.log`);
