@@ -40,9 +40,11 @@ export default new Handler({
             `${fileName}.${fileExtension}`
           );
           const relativePath = (isProduction ? "../" : "") + mergedPath;
-          const command: ICommandFile = await import(relativePath).then(
-            (module) => module.default
-          );
+          const command: ICommandFile = await import(relativePath)
+            .then((module) => module.default)
+            .catch((error) => {
+              console.log(error);
+            });
           if (!command.name) {
             client.logStatus(fileName, "Message", ELogStatus.ERROR);
             return;
@@ -85,40 +87,27 @@ export default new Handler({
         }
       };
 
-      const messages = await readdir(`${sourcePath}/commands`);
-      const filteredMessages = messages.filter((file) =>
-        file.endsWith(`.${fileExtension}`)
-      );
-      await Promise.all(
-        filteredMessages.map((file) => {
-          const fileName = file.split(".")[0];
-          return loadMessageFile(
-            `${relativeSourcePath}/commands/${file}`,
-            fileName
-          );
-        })
-      );
+      const readCommandsRecursively = async (dir: string) => {
+        const entries = await readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+          const fullPath = path.join(dir, entry.name);
 
-      const subDirectories = messages.filter(
-        (file) => !file.endsWith(`.${fileExtension}`)
-      );
-      for (const subDirectory of subDirectories) {
-        const subFiles = await readdir(
-          `${sourcePath}/commands/${subDirectory}`
-        );
-        const filteredSubFiles = subFiles.filter((file) =>
-          file.endsWith(`.${fileExtension}`)
-        );
-        await Promise.all(
-          filteredSubFiles.map((file) => {
-            const fileName = file.split(".")[0];
-            return loadMessageFile(
-              `${relativeSourcePath}/commands/${subDirectory}`,
-              fileName
-            );
-          })
-        );
-      }
+          if (entry.isDirectory()) {
+            await readCommandsRecursively(fullPath);
+          } else if (
+            entry.isFile() &&
+            entry.name.endsWith(`.${fileExtension}`)
+          ) {
+            const fileName = entry.name.split(".")[0];
+            const relativePath = path
+              .join(relativeSourcePath, fullPath.replace(sourcePath, ""))
+              .replace(entry.name, "");
+            await loadMessageFile(relativePath, fileName);
+          }
+        }
+      };
+
+      await readCommandsRecursively(`${sourcePath}/commands`);
 
       client.logStatus("Slash Registration", "Command", ELogStatus.LOADING);
       client.on(Events.ClientReady, async () => {

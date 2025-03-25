@@ -38,9 +38,11 @@ export default new Handler({
             `${fileName}.event.${fileExtension}`
           );
           const relativePath = (isProduction ? "../" : "") + mergedPath;
-          const event: IEventFile = await import(relativePath).then(
-            (module) => module.default
-          );
+          const event: IEventFile = await import(relativePath)
+            .then((module) => module.default)
+            .catch((error) => {
+              console.log(error);
+            });
           if (!event.name) {
             client.logStatus(fileName, "Event", ELogStatus.ERROR);
             return;
@@ -75,35 +77,27 @@ export default new Handler({
         }
       };
 
-      const events = await readdir(`${sourcePath}/events`);
-      const filteredEvents = events.filter((file) =>
-        file.endsWith(`.${fileExtension}`)
-      );
-      await Promise.all(
-        filteredEvents.map((file) => {
-          const fileName = file.split(".")[0];
-          registerEventFile(`${relativeSourcePath}/events/${file}`, fileName);
-        })
-      );
+      const readEventsRecursively = async (dir: string) => {
+        const entries = await readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+          const fullPath = path.join(dir, entry.name);
 
-      const subDirectories = events.filter(
-        (file) => !file.endsWith(`.${fileExtension}`)
-      );
-      for (const subDirectory of subDirectories) {
-        const subFiles = await readdir(`${sourcePath}/events/${subDirectory}`);
-        const filteredSubFiles = subFiles.filter((file) =>
-          file.endsWith(`.${fileExtension}`)
-        );
-        await Promise.all(
-          filteredSubFiles.map((file) => {
-            const fileName = file.split(".")[0];
-            return registerEventFile(
-              `${relativeSourcePath}/events/${subDirectory}`,
-              fileName
-            );
-          })
-        );
-      }
+          if (entry.isDirectory()) {
+            await readEventsRecursively(fullPath);
+          } else if (
+            entry.isFile() &&
+            entry.name.endsWith(`.${fileExtension}`)
+          ) {
+            const fileName = entry.name.split(".")[0];
+            const relativePath = path
+              .join(relativeSourcePath, fullPath.replace(sourcePath, ""))
+              .replace(entry.name, "");
+            await registerEventFile(relativePath, fileName);
+          }
+        }
+      };
+
+      await readEventsRecursively(`${sourcePath}/events`);
     } catch (error) {
       CatchError.print(error);
     }
