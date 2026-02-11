@@ -36,7 +36,7 @@
   "homepage": "https://github.com/sleepy4k/discordjs-nakaaa-ts#readme",
   "dependencies": {
     "@discord-player/extractor": "^7.1.0",
-    "axios": "^1.8.3",
+    "axios": "^1.13.5",
     "cpu-stat": "^2.0.1",
     "discord-api-types": "^0.37.119",
     "discord-player": "^7.1.0",
