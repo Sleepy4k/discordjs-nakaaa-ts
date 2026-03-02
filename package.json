@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/node": "^22.10.6",
     "concurrently": "^9.1.2",
-    "nodemon": "^3.1.9",
+    "nodemon": "^3.1.14",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
